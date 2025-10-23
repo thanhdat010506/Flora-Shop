@@ -1,1 +1,266 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <title>Giỏ hàng</title>
+  <script src="data.js"></script>
+  <style>
+    body { font-family: sans-serif; padding: 20px; max-width: 900px; margin: auto; }
+    .header { display:flex; justify-content:space-between; align-items:center; }
+    .card { border:1px solid #ddd; border-radius:8px; padding:12px; margin:10px 0; display:flex; gap:12px; align-items:center; }
+    img { border-radius:6px; }
+    input, select, button, textarea { padding:8px; border:1px solid #ccc; border-radius:6px; font-size:14px; }
+    button { cursor:pointer; background:#28a745; color:#fff; border:none; }
+    button.secondary { background:#007bff; }
+    .muted { opacity:0.45; transform: scale(0.98); filter: blur(1px); transition: all .2s ease; }
+    .hidden { display:none !important; }
+    .checkout-panel { border:1px solid #ccc; border-radius:8px; padding:12px; margin-top:12px; background:#fafafa; }
+    .row { display:flex; gap:12px; flex-wrap:wrap; align-items:center; }
+    .col { flex:1; min-width:200px; }
+    .actions { margin-top:12px; display:flex; gap:8px; }
+    .invoice { border:1px solid #444; padding:16px; background:#fff; border-radius:8px; margin-top:16px; }
+    .right { text-align:right; }
+    .warn { color:#c00; font-weight:600; }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <h2>🛒 Giỏ hàng của bạn</h2>
+    <div>
+      <a href="index.html">← Tiếp tục mua hàng</a>
+    </div>
+  </div>
 
+  <div id="productsContainer"></div>
+
+  <div id="summary" class="card hidden">
+    <div>
+      <div>Tổng: <b id="summaryTotal">0</b> đ</div>
+      <div class="actions">
+        <button class="secondary" onclick="startCheckout()">Thanh toán</button>
+        <button onclick="clearCart()">Xóa giỏ hàng</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="checkoutPanel" class="checkout-panel hidden">
+    <h3>Thông tin giao hàng & thanh toán</h3>
+
+    <div class="row">
+      <div class="col">
+        <label>Chọn địa chỉ hiện có</label><br>
+        <select id="addressSelect" onchange="onAddressChange()">
+          <option value="default">-- Chọn địa chỉ --</option>
+          <option value="addr1">123 Nguyễn Văn A, Q1, TP.HCM</option>
+          <option value="addr2">45 Trần Phú, Ba Đình, Hà Nội</option>
+          <option value="new">Nhập địa chỉ mới</option>
+        </select>
+      </div>
+      <div class="col hidden" id="addrBox">
+        <label>Địa chỉ mới</label><br>
+        <textarea id="addressInput" rows="2" placeholder="Nhập địa chỉ giao hàng..."></textarea>
+      </div>
+    </div>
+
+    <div style="margin-top:8px;">
+      <label>Ghi chú (tùy chọn)</label><br>
+      <input id="note" placeholder="VD: gọi trước 30 phút..." style="width:100%">
+    </div>
+
+    <div style="margin-top:12px;">
+      <label>Phương thức thanh toán</label><br>
+      <label><input type="radio" name="pay" value="cash" checked onchange="toggleCard()"> Tiền mặt (COD)</label> &nbsp;
+      <label><input type="radio" name="pay" value="card" onchange="toggleCard()"> Thẻ (Visa/Master)</label>
+    </div>
+
+    <div id="cardBox" class="hidden" style="margin-top:10px;">
+      <div class="row">
+        <div class="col">
+          <label>Tên chủ thẻ</label><br>
+          <input id="cardName" placeholder="Tên in trên thẻ" style="width:100%">
+        </div>
+        <div class="col">
+          <label>Số thẻ</label><br>
+          <input id="cardNumber" placeholder="1234 5678 9012 3456" maxlength="19" style="width:100%">
+        </div>
+      </div>
+      <div class="row" style="margin-top:8px;">
+        <div class="col">
+          <label>Hết hạn</label><br>
+          <input type="month" id="cardExpiry" style="width:100%">
+        </div>
+        <div class="col">
+          <label>CVV</label><br>
+          <input id="cardCvv" maxlength="4" placeholder="3-4 chữ số" style="width:100%">
+        </div>
+      </div>
+    </div>
+
+    <div class="actions">
+      <button onclick="confirmPayment()">Xác nhận & Thanh toán</button>
+      <button onclick="cancelCheckout()" type="button">Hủy</button>
+    </div>
+
+  </div>
+
+  <div id="invoiceBox" class="hidden"></div>
+
+  <script>
+  
+    let cart = JSON.parse(localStorage.getItem('cart') || '[]');
+    const productsContainer = document.getElementById('productsContainer');
+    const summary = document.getElementById('summary');
+    const summaryTotal = document.getElementById('summaryTotal');
+    const checkoutPanel = document.getElementById('checkoutPanel');
+    const invoiceBox = document.getElementById('invoiceBox');
+
+    function renderCart() {
+      productsContainer.innerHTML = '';
+      if (!cart.length) {
+        productsContainer.innerHTML = '<p>Giỏ hàng trống.</p>';
+        summary.classList.add('hidden');
+        return;
+      }
+
+      let total = 0;
+      cart.forEach(item => {
+        const subtotal = item.price * item.qty;
+        total += subtotal;
+        const node = document.createElement('div');
+        node.className = 'card';
+        node.innerHTML = `
+          <img src="${item.image}" width="80" alt="${item.name}">
+          <div style="flex:1">
+            <div><b>${item.name}</b></div>
+            <div>Giá: ${item.price.toLocaleString()}đ</div>
+            <div>Thành tiền: <b>${subtotal.toLocaleString()}đ</b></div>
+          </div>
+          <div style="text-align:right">
+            <div>SL: <input type="number" min="1" value="${item.qty}" onchange="updateQty(${item.id}, this.value)" style="width:70px"></div>
+            <div style="margin-top:8px"><button onclick="removeItem(${item.id})" style="background:#dc3545">Xóa</button></div>
+          </div>
+        `;
+        productsContainer.appendChild(node);
+      });
+
+      summaryTotal.textContent = total.toLocaleString();
+      summary.classList.remove('hidden');
+      invoiceBox.classList.add('hidden');
+      checkoutPanel.classList.add('hidden');
+    
+    }
+
+    function updateQty(id, qty) {
+      const it = cart.find(i => i.id === id);
+      if (!it) return;
+      it.qty = Math.max(1, parseInt(qty) || 1);
+      localStorage.setItem('cart', JSON.stringify(cart));
+      renderCart();
+    }
+
+    function removeItem(id) {
+      cart = cart.filter(i => i.id !== id);
+      localStorage.setItem('cart', JSON.stringify(cart));
+      renderCart();
+    }
+
+    function clearCart() {
+      if (!confirm('Xóa toàn bộ giỏ hàng?')) return;
+      cart = [];
+      localStorage.removeItem('cart');
+      renderCart();
+    }
+
+    function startCheckout() {
+      if (!cart.length) { alert('Giỏ hàng trống!'); return; }
+ 
+      productsContainer.classList.add('muted');
+      summary.classList.add('muted');
+      checkoutPanel.classList.remove('hidden');
+      invoiceBox.classList.add('hidden');
+
+      checkoutPanel.scrollIntoView({behavior:'smooth', block:'center'});
+    }
+
+    function cancelCheckout() {
+      productsContainer.classList.remove('muted');
+      summary.classList.remove('muted');
+      checkoutPanel.classList.add('hidden');
+    }
+
+    function onAddressChange() {
+      const sel = document.getElementById('addressSelect').value;
+      document.getElementById('addrBox').classList.toggle('hidden', sel !== 'new');
+    }
+
+    function toggleCard() {
+      const v = document.querySelector('input[name="pay"]:checked').value;
+      document.getElementById('cardBox').classList.toggle('hidden', v !== 'card');
+    }
+
+    function confirmPayment() {
+
+      const addrSel = document.getElementById('addressSelect').value;
+      let address = '';
+      if (addrSel === 'new') {
+        address = document.getElementById('addressInput').value.trim();
+      } else if (addrSel === 'default') {
+        address = '123 Nguyễn Văn A, Q1, TP.HCM';
+      } else if (addrSel === 'addr1') {
+        address = '123 Nguyễn Văn A, Q1, TP.HCM';
+      } else if (addrSel === 'addr2') {
+        address = '45 Trần Phú, Ba Đình, Hà Nội';
+      }
+
+      if (!address) { alert('Vui lòng nhập hoặc chọn địa chỉ giao hàng.'); return; }
+
+      const payment = document.querySelector('input[name="pay"]:checked').value;
+      let paymentDesc = payment === 'cash' ? 'Tiền mặt (COD)' : 'Thẻ';
+      let cardSummary = '';
+      if (payment === 'card') {
+        const cn = document.getElementById('cardName').value.trim();
+        const cnum = document.getElementById('cardNumber').value.replace(/\s+/g,'').trim();
+        const cexp = document.getElementById('cardExpiry').value;
+        const cvv = document.getElementById('cardCvv').value.trim();
+        if (!cn || !cnum || !cexp || !cvv) { alert('Vui lòng nhập đầy đủ thông tin thẻ.'); return; }
+
+        if (cnum.length < 12) { alert('Số thẻ không hợp lệ.'); return; }
+        cardSummary = ` (${cn}, ****${cnum.slice(-4)})`;
+        paymentDesc += cardSummary;
+      }
+
+      const date = new Date().toLocaleString('vi-VN');
+      let total = cart.reduce((s,i) => s + i.price * i.qty, 0);
+      let html = `<div class="invoice">
+        <h3>🧾 HÓA ĐƠN THANH TOÁN</h3>
+        <p><b>Ngày:</b> ${date}</p>
+        <p><b>Địa chỉ giao hàng:</b> ${escapeHtml(address)}</p>
+        <p><b>Phương thức:</b> ${escapeHtml(paymentDesc)}</p>
+        <hr>
+        <div>`;
+      cart.forEach(i => {
+        html += `<p>${escapeHtml(i.name)} — SL: ${i.qty} × ${i.price.toLocaleString()}đ = <b>${(i.qty*i.price).toLocaleString()}đ</b></p>`;
+      });
+      html += `</div><hr><h3 class="right">Tổng: ${total.toLocaleString()}đ</h3>
+        <p style="margin-top:8px;">Ghi chú: ${escapeHtml(document.getElementById('note').value || '')}</p>
+        <p><i>Cảm ơn bạn đã mua hàng!</i></p>
+      </div>`;
+
+      checkoutPanel.classList.add('hidden');
+      productsContainer.classList.remove('muted');
+      summary.classList.remove('muted');
+
+      invoiceBox.innerHTML = html;
+      invoiceBox.classList.remove('hidden');
+      localStorage.removeItem('cart');
+      cart = [];
+      renderCart();
+      invoiceBox.scrollIntoView({behavior:'smooth', block:'center'});
+    }
+    function escapeHtml(s='') {
+      return String(s).replace(/[&<>"']/g, function(m){ return ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'})[m]; });
+    }
+    renderCart();
+  </script>
+</body>
+</html>
