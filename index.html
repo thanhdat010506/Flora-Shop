@@ -1,32 +1,136 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="vi">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Flora Shop | Trang chủ</title>
-  <link rel="stylesheet" href="css/style.css">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Flora Shop — Trang chủ</title>
+  <link rel="stylesheet" href="css/index.css" />
+  <link rel="jssheet" href="js/index.js"/>
 </head>
 <body>
-  <header>
-    <div class="logo">🌿 Flora Shop</div>
-    <nav>
-      <ul>
-        <li><a href="index.html">Trang chủ</a></li>
-        <li><a href="products.html">Sản phẩm</a></li>
-        <li><a href="about.html">Giới thiệu</a></li>
-        <li><a href="cart.html">Giỏ hàng</a></li>
-        <li><a href="login.html">Tài khoản</a></li>
-      </ul>
+  <header class="nav">
+  <div class="nav-inner">
+    <a href="#" class="logo">🌿 <span>Flora Shop</span></a>
+    <nav class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="products.html">Products</a>
+      <a href="about.html">About</a>
     </nav>
-  </header>
+    <div class="nav-icons">
+      <i class="fa-solid fa-cart-shopping"></i>
+      <i class="fa-solid fa-user"></i>
+    </div>
+  </div>
+</header>
+  <main>
+    <!--hero_content-->
+    <section class="hero">
+      <div class="hero-content container">
+        <div class="hero-text">
+          <h1>Flora Shop — Hoa & Cây Xanh Cho Mọi Không Gian</h1>
+          <p>Chọn từ bộ sưu tập hoa tươi & cây phong cách, giao hàng nhanh, gói quà xinh — mang thiên nhiên đến gần bạn hơn.</p>
+          <div class="hero-ctas">
+            <a href="products.html" class="btn primary">Mua ngay</a>
+            <a href="about.html" class="btn ghost">Tìm hiểu về chúng tôi</a>
+          </div>
+        </div>
+        <div class="hero-image" aria-hidden="true">
+        </div>
+      </div>
+    </section>
+    <!--features_content-->
+    <section class="features container reveal">
+      <div class="feature">
+      <img 
+          src="https://static.vecteezy.com/system/resources/previews/000/382/721/original/vector-flower-icon.jpg",alt="", width="64", height="64"/>
+        <h3>Hoa tươi mỗi ngày</h3>
+        <p>Được cắm tỉ mỉ từ nguyên liệu tươi, giao nhanh trong ngày.</p>
+      </div>
+      <div class="feature">
+        <img src= "https://icon-library.com/images/gift-icon/gift-icon-13.jpg" alt="" 
+         width="128"
+         height="64"/>
+         
+        <h3>Miễn phí gói quà</h3>
+        <p>Mỗi đơn hàng kèm gói quà xinh xắn theo yêu cầu.</p>
+      </div>
+      <div class="feature">
+        <img src= "https://static.vecteezy.com/system/resources/previews/017/722/041/original/guarantee-icon-illustration-best-guarantee-quality-assurance-badge-certified-warranty-line-outline-icons-vector.jpg", alt="" />
+        <h3>Bảo hành cây</h3>
+        <p>Hướng dẫn chăm sóc & đổi mới trong 7 ngày (theo điều kiện).</p>
+      </div>
+    </section>
 
-  <main id="content">
-    <h1>Chào mừng đến với Flora Shop</h1>
-    <p>Website bán cây xanh & hoa tươi – mang thiên nhiên đến ngôi nhà bạn.</p>
+    <!--ảnh sản phẩm nhưng chưa có để link-->
+    <section id="products" class="products container reveal">
+      <div class="section-head">
+        <h2>Sản phẩm nổi bật</h2>
+        <p>Chọn theo bộ sưu tập được tuyển chọn.</p>
+      </div>
+
+      <div id="productGrid" class="product-grid">
+        <!-- JS sẽ chèn sản phẩm mẫu 9 items per page -->
+      </div>
+
+      <div class="pagination" id="pagination"></div>
+    </section>
+
+    <!--phần giới thiệu ngắn-->
+    <section class="about-teaser container reveal">
+      <div class="about-teaser-inner">
+        <img src="https://tse3.mm.bing.net/th/id/OIP.yawlk2zlKYaY6uuzqKzxGAHaE8?cb=12&rs=1&pid=ImgDetMain&o=7&rm=3" alt="Cửa hàng Flora" class="about-teaser-img" />
+        <div>
+          <h3>Flora Shop — Từ đam mê đến mỗi bó hoa</h3>
+          <p>Chúng tôi thành lập Flora Shop với mong muốn đơn giản là giúp mọi người dễ dàng kết nối và bày tỏ cảm 
+            xúc bằng vẻ đẹp tinh tế của hoa. Đối tượng khách hàng chúng tôi hướng đến là những người trân trọng giá 
+            trị tinh thần, từ việc tìm kiếm một món quà ý nghĩa, đến việc muốn làm mới không gian sống của mình.
+            Một bó hoa không chỉ là quà tặng mà còn là liều thuốc tinh thần, giúp giảm căng thẳng,
+            mang lại nguồn năng lượng tích cực và làm phong phú thêm vẻ đẹp của cuộc sống hàng ngày.
+            Hãy để chúng tôi mang sắc hương thiên nhiên tô điểm cho những khoảnh khắc đáng nhớ của bạn.</p>
+          <a href="about.html" class="btn primary">Xem thêm</a>
+        </div>
+      </div>
+    </section>
+
+    <!--uy tín cửa hàng-->
+    <section class="testimonials container reveal">
+      <h2>Khách hàng nói gì</h2>
+      <div class="testi-grid">
+        <blockquote>Giao hàng nhanh, bó hoa đẹp hơn hình, giao trễ được đền bù.</blockquote>
+        <blockquote>Chăm sóc khách hàng chu đáo, tư vấn nhiệt tình.</blockquote>
+        <blockquote>Sản phẩm chất lượng, cây sống tốt sau 2 tuần.</blockquote>
+      </div>
+    </section>
+
+    <!--Contact-->
+    <section id="contact" class="newsletter container reveal">
+      <div class="newsletter-inner">
+        <div>
+          <h2>Nhận khuyến mãi & tips chăm cây</h2>
+          <p>Đăng ký email để nhận mã giảm, mẹo chăm sóc và bộ sưu tập mới nhất.</p>
+        </div>
+        <form id="newsletterForm" class="newsletter-form">
+          <input type="email" name="email" placeholder="Nhập email của bạn" required />
+          <button class="btn primary" type="submit">Đăng ký</button>
+        </form>
+      </div>
+    </section>
   </main>
 
-  <footer>
-    <p>© 2025 Flora Shop. All rights reserved.</p>
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <div>
+        <a class="logo" href="#">Flora<span>Shop</span></a>
+        <p>© <span id="year"></span> Flora Shop. All rights reserved.</p>
+      </div>
+      <nav class="footer-nav">
+        <a href="about.html">Giới thiệu</a>
+        <a href="#products">Sản phẩm</a>
+        <a href="#contact">Liên hệ</a>
+      </nav>
+    </div>
   </footer>
+
+  <script src="main.js"></script>
 </body>
 </html>
