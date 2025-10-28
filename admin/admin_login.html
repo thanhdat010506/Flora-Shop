@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Admin Login | Flora Shop</title>
+  <link rel="stylesheet" href="../css/admin.css" />
+</head>
+<body class="login-body">
+  <div class="card login-card">
+    <h1>Flora Shop • Admin</h1>
+    <p class="muted">Đăng nhập khu vực quản trị</p>
+
+    <form id="adminLoginForm">
+      <label>Email</label>
+      <input type="email" id="email" placeholder="admin@flora.shop" required />
+
+      <label>Mật khẩu</label>
+      <input type="password" id="password" placeholder="••••••••" required />
+
+      <button type="submit" class="btn-primary">Đăng nhập</button>
+      <p id="loginMsg" class="msg"></p>
+    </form>
+
+    <div class="tip">
+      <strong>Tài khoản mẫu:</strong><br/>
+      Email: <code>admin@flora.shop</code><br/>
+      Pass: <code>123456</code>
+    </div>
+  </div>
+
+  <script src="../js/admin.js"></script>
+<script>
+  window.addEventListener('DOMContentLoaded', () => {
+    Admin.initLogin();
+  });
+</script>
+</body>
+</html>
