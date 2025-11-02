@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Quản lý đơn hàng - Admin</title>
+<link rel="stylesheet" href="../assets/css/styles.css">
+</head>
+<body>
+<div class="sidebar">
+  <h2>Flora Admin</h2>
+  <ul>
+    <li><a href="dashboard.html">Tổng quan</a></li>
+    <li><a href="manage_products.html">Sản phẩm</a></li>
+    <li><a href="manage_users.html">Người dùng</a></li>
+    <li><a href="manage_orders.html" class="active">Đơn hàng</a></li>
+  </ul>
+</div>
+
+<div class="main">
+  <h1>Quản lý đơn hàng</h1>
+  <table id="orderTable">
+    <thead>
+      <tr>
+        <th>ID</th><th>Người đặt</th><th>Ngày</th><th>Tổng tiền</th><th>Trạng thái</th><th>Hành động</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+</div>
+
+<script src="assets/js/admin.js"></script>
+<script>
+Admin.requireAdmin();
+let orders = Admin.getOrders();
+const tbody = document.querySelector('#orderTable tbody');
+
+function render(){
+  orders = Admin.getOrders();
+  if(!orders.length){ tbody.innerHTML='<tr><td colspan="6">Chưa có đơn hàng</td></tr>'; return; }
+  tbody.innerHTML = orders.map((o,i)=>{
+    const total = o.items.reduce((s,it)=>s+it.price*it.qty,0);
+    return `
+      <tr>
+        <td>${o.id}</td>
+        <td>${o.name}</td>
+        <td>${o.date}</td>
+        <td>${total.toLocaleString()}đ</td>
+        <td>${o.status}</td>
+        <td>
+          <button onclick="viewDetail(${i})">Xem</button>
+          <button onclick="changeStatus(${i})">Cập nhật</button>
+        </td>
+      </tr>`;
+  }).join('');
+}
+
+function viewDetail(i){
+  const o = orders[i];
+  const items = o.items.map(it=>`${it.name} x${it.qty}`).join('\n');
+  alert(`Đơn #${o.id}\nKhách: ${o.name}\nNgày: ${o.date}\nĐịa chỉ: ${o.address}\nThanh toán: ${o.payment}\nTrạng thái: ${o.status}\n\nSản phẩm:\n${items}`);
+}
+
+function changeStatus(i){
+  const newStatus = prompt('Nhập trạng thái mới (Chờ xử lý / Đã giao / Hủy)', orders[i].status);
+  if(!newStatus) return;
+  orders[i].status = newStatus;
+  Admin.setOrders(orders); render();
+}
+
+render();
+</script>
+</body>
+</html>

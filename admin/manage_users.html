@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Quản lý người dùng - Flora Admin</title>
+  <link rel="stylesheet" href="admin.css"> <!-- nếu để chung thư mục -->
+  <script defer src="../assets/js/admin.js"></script>
+</head>
+<body>
+  <aside class="sidebar">
+    <h2>🌿 Flora Admin</h2>
+    <ul>
+      <li><a href="dashboard.html">Tổng quan</a></li>
+      <li><a href="manage_products.html">Sản phẩm</a></li>
+      <li><a href="manage_users.html" class="active">Người dùng</a></li>
+      <li><a href="manage_orders.html">Đơn hàng</a></li>
+    </ul>
+  </aside>
+
+  <main class="main">
+    <h1>Quản lý người dùng</h1>
+    <button id="addUserBtn" class="btn-add">➕ Thêm người dùng</button>
+
+    <table id="ulist">
+      <thead>
+        <tr>
+          <th>Tên</th>
+          <th>Email</th>
+          <th>Vai trò</th>
+          <th>Hành động</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+  </main>
+
+  <!-- Modal thêm/sửa -->
+  <div id="userModal" class="modal">
+    <div class="modal-content">
+      <h2 id="modalTitle">Thêm người dùng</h2>
+      <label>Tên:</label>
+      <input type="text" id="userName" placeholder="Nhập tên...">
+      <label>Email:</label>
+      <input type="email" id="userEmail" placeholder="Nhập email...">
+      <label>Vai trò:</label>
+      <select id="userRole">
+        <option value="user">User</option>
+        <option value="admin">Admin</option>
+      </select>
+      <div class="modal-actions">
+        <button id="saveUserBtn" class="btn-primary">Lưu</button>
+        <button id="cancelUserBtn" class="btn-cancel">Hủy</button>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

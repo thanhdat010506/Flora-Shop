@@ -1,0 +1,175 @@
+/* ========== Flora Admin Interface ========== */
+body {
+  font-family: "Poppins", sans-serif;
+  background-color: #fdfdf9;
+  margin: 0;
+  display: flex;
+  min-height: 100vh;
+  color: #2b2b2b;
+}
+
+/* Sidebar */
+.sidebar {
+  width: 230px;
+  background: #1b5e20;
+  color: #fff;
+  padding: 25px 20px;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+.sidebar h2 {
+  font-size: 22px;
+  margin-bottom: 30px;
+}
+
+.sidebar ul {
+  list-style: none;
+  padding: 0;
+}
+
+.sidebar ul li {
+  margin-bottom: 15px;
+}
+
+.sidebar ul li a {
+  color: #fff;
+  text-decoration: none;
+  padding: 10px 14px;
+  border-radius: 8px;
+  display: block;
+  transition: 0.2s;
+}
+
+.sidebar ul li a:hover,
+.sidebar ul li a.active {
+  background: #4caf50;
+}
+
+/* Main area */
+.main {
+  flex: 1;
+  padding: 40px;
+  background: #fdfcf9;
+}
+
+h1 {
+  font-size: 26px;
+  margin-bottom: 20px;
+}
+
+/* Table */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  background: #fff;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.08);
+}
+
+th, td {
+  padding: 12px 15px;
+  border-bottom: 1px solid #eee;
+  text-align: left;
+}
+
+th {
+  background: #e8f5e9;
+  color: #333;
+}
+
+tr:hover {
+  background: #f1f8e9;
+}
+
+/* Buttons */
+button, .btn-add, .btn-primary, .btn-cancel {
+  cursor: pointer;
+  padding: 8px 14px;
+  border-radius: 6px;
+  border: none;
+  transition: 0.2s;
+}
+
+.btn-add {
+  background: #43a047;
+  color: white;
+  margin-bottom: 15px;
+}
+
+.btn-add:hover {
+  background: #388e3c;
+}
+
+.btn-edit {
+  background: #81c784;
+  color: #fff;
+  border: none;
+  margin-right: 6px;
+}
+
+.btn-edit:hover {
+  background: #66bb6a;
+}
+
+.btn-del {
+  background: #ef5350;
+  color: #fff;
+  border: none;
+}
+
+.btn-del:hover {
+  background: #e53935;
+}
+
+/* Modal */
+.modal {
+  display: none;
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0, 0, 0, 0.3);
+  justify-content: center;
+  align-items: center;
+}
+
+.modal-content {
+  background: #fff;
+  padding: 25px;
+  border-radius: 14px;
+  width: 340px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.modal-content h2 {
+  margin-top: 0;
+  font-size: 20px;
+}
+
+.modal-content input, .modal-content select {
+  width: 100%;
+  margin: 8px 0;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+}
+
+.modal-actions {
+  text-align: right;
+  margin-top: 10px;
+}
+
+.modal-actions button {
+  margin-left: 8px;
+}
+
+.btn-primary {
+  background: #4caf50;
+  color: white;
+}
+
+.btn-cancel {
+  background: #ccc;
+  color: black;
+}

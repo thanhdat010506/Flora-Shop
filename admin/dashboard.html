@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head><meta charset="utf-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/><title>Admin Dashboard</title>
+<link rel="stylesheet" href="../assets/css/styles.css"></head>
+<body>
+<div class="sidebar">
+  <h2>Flora Admin</h2>
+  <ul>
+    <li><a href="dashboard.html" class="active">Tổng quan</a></li>
+    <li><a href="manage_products.html">Sản phẩm</a></li>
+    <li><a href="manage_users.html">Người dùng</a></li>
+    <li><a href="#" onclick="logout()">Đăng xuất</a></li>
+  </ul>
+</div>
+<div class="main">
+  <h1>Tổng quan</h1>
+  <div class="cards">
+    <div class="card"><h3>Người dùng</h3><p id="m_users">0</p></div>
+    <div class="card"><h3>Sản phẩm</h3><p id="m_products">0</p></div>
+    <div class="card"><h3>Đơn hàng</h3><p id="m_orders">0</p></div>
+  </div>
+</div>
+<script src="assets/js/admin.js"></script>
+<script>
+if(!localStorage.getItem('isAdmin')) location.href='admin_login.html';
+document.getElementById('m_users').textContent = JSON.parse(localStorage.getItem('users')||'[]').length;
+document.getElementById('m_products').textContent = JSON.parse(localStorage.getItem('products')||'[]').length;
+document.getElementById('m_orders').textContent = JSON.parse(localStorage.getItem('history')||'[]').length;
+function logout(){ localStorage.removeItem('isAdmin'); location.href='admin_login.html'; }
+</script>
+</body>
+</html>
