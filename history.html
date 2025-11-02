@@ -1,26 +1,19 @@
 <!DOCTYPE html>
 <html lang="vi">
-
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lịch sử mua hàng</title>
-    <link rel="stylesheet" href="style.css">
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Lịch sử - Flora Shop</title>
+<link rel="stylesheet" href="assets/css/styles.css">
+<script defer src="assets/js/main.js"></script>
+<script defer src="js/history.js"></script>
 </head>
-
-<body class="history-page">
-    <header>
-        <h2>Shop Name</h2>//Tên gì thêm vào
-        <div class="user-info">
-            <span id="username"></span>
-            <button id="logoutBtn">Đăng xuất</button>
-        </div>
-    </header>
-    <div class="container">
-        <h3>Lịch sử mua hàng</h3>
-        <ul id="historyList"></ul>
-    </div>
-    <script src="script.js"></script>
+<body>
+<header class="header"><div class="logo">🌿 Flora Shop</div></header>
+<main class="container">
+  <h2>Đơn hàng đã đặt</h2>
+  <div id="order-list" class="order-list"></div>
+</main>
+<footer class="footer"><p>© 2025 Flora Shop</p></footer>
 </body>
-
 </html>

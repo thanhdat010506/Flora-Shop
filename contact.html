@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Liên hệ - Flora Shop</title>
+  <link rel="stylesheet" href="assets/css/styles.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+<body>
+  <header class="header">
+    <div class="logo">🌿 Flora Shop</div>
+    <nav class="nav">
+      <ul>
+        <li><a href="index.html">Trang chủ</a></li>
+        <li><a href="products.html">Sản phẩm</a></li>
+        <li><a href="about.html">Giới thiệu</a></li>
+        <li><a href="contact.html" class="active">Liên hệ</a></li>
+      </ul>
+    </nav>
+    <div class="icons">
+    <a href="cart.html" class="fa-solid fa-cart-shopping"></a>
+    <a href="login.html" class="fa-regular fa-user"></a>
+    </div>
+    <div class="menu-toggle">☰</div>
+  </header>
+
+  <main style="padding:60px 20px;text-align:center;">
+    <h2>Liên hệ với chúng tôi</h2>
+    <p>Hãy để lại lời nhắn, Flora Shop luôn sẵn sàng lắng nghe bạn 💚</p>
+
+    <form id="contactForm" style="max-width:500px;margin:30px auto;text-align:left;background:#fff;padding:30px;border-radius:15px;box-shadow:0 2px 8px rgba(0,0,0,0.1);">
+      <label>Tên của bạn</label><br>
+      <input type="text" id="name" required style="width:100%;padding:10px;margin:10px 0;border-radius:8px;border:1px solid #ccc;"><br>
+      <label>Email</label><br>
+      <input type="email" id="email" required style="width:100%;padding:10px;margin:10px 0;border-radius:8px;border:1px solid #ccc;"><br>
+      <label>Lời nhắn</label><br>
+      <textarea id="message" required rows="5" style="width:100%;padding:10px;margin:10px 0;border-radius:8px;border:1px solid #ccc;"></textarea><br>
+      <button type="submit" style="background:#2f6e4e;color:#fff;padding:10px 20px;border:none;border-radius:10px;cursor:pointer;">Gửi</button>
+    </form>
+  </main>
+
+  <footer class="footer">
+    <p>© 2025 Flora Shop. Mọi quyền được bảo lưu.</p>
+  </footer>
+
+  <script>
+    document.getElementById('contactForm').addEventListener('submit', e => {
+      e.preventDefault();
+      alert('Cảm ơn bạn đã liên hệ! Chúng tôi sẽ phản hồi sớm nhất có thể 🌿');
+      e.target.reset();
+    });
+  </script>
+</body>
+</html>

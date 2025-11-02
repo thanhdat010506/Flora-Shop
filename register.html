@@ -1,30 +1,37 @@
 <!DOCTYPE html>
-<html lang="en">
-
+<html lang="vi">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Register - Flora Shop</title>
-    <link rel="stylesheet" href="style.css">
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Đăng ký - Flora Shop</title>
+<link rel="stylesheet" href="assets/css/styles.css">
+<script defer src="assets/js/main.js"></script>
 </head>
-
 <body>
-    <header>
-        <h2>Shop Name</h2>//Tên gì thì thay vào
-    </header>
-
-    <div class="container">
-        <h3>Tạo tài khoản</h3>
-        <form id="registerForm">
-            <input type="text" id="regName" placeholder="Nhập tên người dùng" required>
-            <input type="email" id="regEmail" placeholder="Email" required>
-            <input type="password" id="regPassword" placeholder="Mật khẩu" required>
-            <button type="submit">Đăng kí</button>
-            <p>Đã có tài khoản? <a href="login.html">Đăng nhập</a></p>
-        </form>
-    </div>
-
-    <script src="script.js"></script>
+<header class="header"><div class="logo">🌿 Flora Shop</div></header>
+<main class="container">
+  <form id="regForm">
+    <h2>Đăng ký</h2>
+    <input id="rname" placeholder="Họ tên" />
+    <input id="ruser" placeholder="Tên đăng nhập" required />
+    <input id="rpass" type="password" placeholder="Mật khẩu" required />
+    <button class="btn" type="submit">Tạo tài khoản</button>
+  </form>
+</main>
+<script>
+document.getElementById('regForm').addEventListener('submit', e=>{
+  e.preventDefault();
+  const username=document.getElementById('ruser').value.trim();
+  const password=document.getElementById('rpass').value.trim();
+  const fullName=document.getElementById('rname').value.trim();
+  if(!username||!password){ alert('Nhập đủ'); return; }
+  let users=JSON.parse(localStorage.getItem('users')||'[]');
+  if(users.some(u=>u.username===username)){ alert('Trùng tên đăng nhập'); return; }
+  const id='u_'+Math.random().toString(36).slice(2,9);
+  users.push({id,username,password,role:'user',fullName});
+  localStorage.setItem('users', JSON.stringify(users));
+  alert('Đăng ký thành công'); location.href='login.html';
+});
+</script>
 </body>
-
 </html>

@@ -1,136 +1,121 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="vi">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Flora Shop — Trang chủ</title>
-  <link rel="stylesheet" href="css/index.css" />
-  <link rel="jssheet" href="js/index.js"/>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Flora Shop – Mang thiên nhiên đến gần bạn</title>
+  <link rel="stylesheet" href="assets/css/styles.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+  <script defer src="assets/js/main.js"></script>
 </head>
 <body>
-  <header class="nav">
-  <div class="nav-inner">
-    <a href="#" class="logo">🌿 <span>Flora Shop</span></a>
-    <nav class="nav-links">
-      <a href="index.html">Home</a>
-      <a href="products.html">Products</a>
-      <a href="about.html">About</a>
+  <!-- Header -->
+  <header class="header">
+    <div class="logo">🌿 Flora Shop</div>
+    <nav class="nav">
+      <ul>
+        <li><a href="index.html" class="active">Trang chủ</a></li>
+        <li><a href="products.html">Sản phẩm</a></li>
+        <li><a href="about.html">Giới thiệu</a></li>
+        <li><a href="contact.html">Liên hệ</a></li>
+      </ul>
     </nav>
-    <div class="nav-icons">
-      <i class="fa-solid fa-cart-shopping"></i>
-      <i class="fa-solid fa-user"></i>
+    <div class="icons">
+      <a href="cart.html" title="Giỏ hàng" class="fa-solid fa-cart-shopping"></a>
+      <a href="login.html" title="Tài khoản" class="fa-regular fa-user"></a>
+    </div>
+    <div class="menu-toggle">☰</div>
+  </header>
+
+  <!-- Hero Section -->
+  <!-- Hero Section (Slide tự động) -->
+<section class="hero-slider">
+  <div class="slides">
+    <div class="slide active" style="background-image: url('assets/img/banner1.jpg');">
+      <div class="overlay">
+        <h1>Flora Shop — Mang thiên nhiên đến gần bạn</h1>
+        <p>Không gian xanh cho cuộc sống tươi mát 🌱</p>
+        <a href="products.html" class="btn-main">Khám phá ngay</a>
+      </div>
+    </div>
+
+    <div class="slide" style="background-image: url('assets/img/banner2.jpg');">
+      <div class="overlay">
+        <h1>Hoa tươi & Cây cảnh tinh tế</h1>
+        <p>Chọn quà tặng ý nghĩa cho người thân và chính bạn 💐</p>
+        <a href="products.html" class="btn-main">Xem bộ sưu tập</a>
+      </div>
+    </div>
+
+    <div class="slide" style="background-image: url('assets/img/banner3.jpg');">
+      <div class="overlay">
+        <h1>Không gian sống tràn năng lượng</h1>
+        <p>Trang trí văn phòng & nhà ở với sắc xanh tự nhiên 🌿</p>
+        <a href="products.html" class="btn-main">Khám phá thêm</a>
+      </div>
     </div>
   </div>
-</header>
-  <main>
-    <!--hero_content-->
-    <section class="hero">
-      <div class="hero-content container">
-        <div class="hero-text">
-          <h1>Flora Shop — Hoa & Cây Xanh Cho Mọi Không Gian</h1>
-          <p>Chọn từ bộ sưu tập hoa tươi & cây phong cách, giao hàng nhanh, gói quà xinh — mang thiên nhiên đến gần bạn hơn.</p>
-          <div class="hero-ctas">
-            <a href="products.html" class="btn primary">Mua ngay</a>
-            <a href="about.html" class="btn ghost">Tìm hiểu về chúng tôi</a>
-          </div>
-        </div>
-        <div class="hero-image" aria-hidden="true">
-        </div>
-      </div>
-    </section>
-    <!--features_content-->
-    <section class="features container reveal">
-      <div class="feature">
-      <img 
-          src="https://static.vecteezy.com/system/resources/previews/000/382/721/original/vector-flower-icon.jpg",alt="", width="64", height="64"/>
-        <h3>Hoa tươi mỗi ngày</h3>
-        <p>Được cắm tỉ mỉ từ nguyên liệu tươi, giao nhanh trong ngày.</p>
-      </div>
-      <div class="feature">
-        <img src= "https://icon-library.com/images/gift-icon/gift-icon-13.jpg" alt="" 
-         width="128"
-         height="64"/>
-         
-        <h3>Miễn phí gói quà</h3>
-        <p>Mỗi đơn hàng kèm gói quà xinh xắn theo yêu cầu.</p>
-      </div>
-      <div class="feature">
-        <img src= "https://static.vecteezy.com/system/resources/previews/017/722/041/original/guarantee-icon-illustration-best-guarantee-quality-assurance-badge-certified-warranty-line-outline-icons-vector.jpg", alt="" />
-        <h3>Bảo hành cây</h3>
-        <p>Hướng dẫn chăm sóc & đổi mới trong 7 ngày (theo điều kiện).</p>
-      </div>
-    </section>
 
-    <!--ảnh sản phẩm nhưng chưa có để link-->
-    <section id="products" class="products container reveal">
-      <div class="section-head">
-        <h2>Sản phẩm nổi bật</h2>
-        <p>Chọn theo bộ sưu tập được tuyển chọn.</p>
-      </div>
+  <!-- Nút điều hướng -->
+  <button class="prev">❮</button>
+  <button class="next">❯</button>
+</section>
 
-      <div id="productGrid" class="product-grid">
-        <!-- JS sẽ chèn sản phẩm mẫu 9 items per page -->
-      </div>
 
-      <div class="pagination" id="pagination"></div>
-    </section>
-
-    <!--phần giới thiệu ngắn-->
-    <section class="about-teaser container reveal">
-      <div class="about-teaser-inner">
-        <img src="https://tse3.mm.bing.net/th/id/OIP.yawlk2zlKYaY6uuzqKzxGAHaE8?cb=12&rs=1&pid=ImgDetMain&o=7&rm=3" alt="Cửa hàng Flora" class="about-teaser-img" />
-        <div>
-          <h3>Flora Shop — Từ đam mê đến mỗi bó hoa</h3>
-          <p>Chúng tôi thành lập Flora Shop với mong muốn đơn giản là giúp mọi người dễ dàng kết nối và bày tỏ cảm 
-            xúc bằng vẻ đẹp tinh tế của hoa. Đối tượng khách hàng chúng tôi hướng đến là những người trân trọng giá 
-            trị tinh thần, từ việc tìm kiếm một món quà ý nghĩa, đến việc muốn làm mới không gian sống của mình.
-            Một bó hoa không chỉ là quà tặng mà còn là liều thuốc tinh thần, giúp giảm căng thẳng,
-            mang lại nguồn năng lượng tích cực và làm phong phú thêm vẻ đẹp của cuộc sống hàng ngày.
-            Hãy để chúng tôi mang sắc hương thiên nhiên tô điểm cho những khoảnh khắc đáng nhớ của bạn.</p>
-          <a href="about.html" class="btn primary">Xem thêm</a>
-        </div>
+  <!-- Sản phẩm nổi bật -->
+  <section class="featured">
+    <h2>Sản phẩm nổi bật</h2>
+    <div class="product-grid">
+      <div class="product-card">
+        <img src="assets/img/rose.jpg" alt="Hoa Hồng Đỏ">
+        <h3>Hoa Hồng Đỏ</h3>
+        <p class="price">180,000đ</p>
       </div>
-    </section>
-
-    <!--uy tín cửa hàng-->
-    <section class="testimonials container reveal">
-      <h2>Khách hàng nói gì</h2>
-      <div class="testi-grid">
-        <blockquote>Giao hàng nhanh, bó hoa đẹp hơn hình, giao trễ được đền bù.</blockquote>
-        <blockquote>Chăm sóc khách hàng chu đáo, tư vấn nhiệt tình.</blockquote>
-        <blockquote>Sản phẩm chất lượng, cây sống tốt sau 2 tuần.</blockquote>
+      <div class="product-card">
+        <img src="assets/img/sunflower.jpg" alt="Hoa Hướng Dương">
+        <h3>Hoa Hướng Dương</h3>
+        <p class="price">220,000đ</p>
       </div>
-    </section>
-
-    <!--Contact-->
-    <section id="contact" class="newsletter container reveal">
-      <div class="newsletter-inner">
-        <div>
-          <h2>Nhận khuyến mãi & tips chăm cây</h2>
-          <p>Đăng ký email để nhận mã giảm, mẹo chăm sóc và bộ sưu tập mới nhất.</p>
-        </div>
-        <form id="newsletterForm" class="newsletter-form">
-          <input type="email" name="email" placeholder="Nhập email của bạn" required />
-          <button class="btn primary" type="submit">Đăng ký</button>
-        </form>
+      <div class="product-card">
+        <img src="assets/img/plant1.jpg" alt="Cây Phát Tài">
+        <h3>Cây Phát Tài</h3>
+        <p class="price">350,000đ</p>
       </div>
-    </section>
-  </main>
-
-  <footer class="site-footer">
-    <div class="container footer-inner">
-      <div>
-        <a class="logo" href="#">Flora<span>Shop</span></a>
-        <p>© <span id="year"></span> Flora Shop. All rights reserved.</p>
+      <div class="product-card">
+        <img src="assets/img/lily.jpg" alt="Hoa Lily">
+        <h3>Hoa Lily</h3>
+        <p class="price">280,000đ</p>
       </div>
-      <nav class="footer-nav">
-        <a href="about.html">Giới thiệu</a>
-        <a href="#products">Sản phẩm</a>
-        <a href="#contact">Liên hệ</a>
-      </nav>
     </div>
-  </footer>
+    <div class="center"><a href="products.html" class="btn-secondary">Xem thêm</a></div>
+  </section>
 
-  <script src="main.js"></script>
+  <!-- Mẹo chăm cây -->
+  <section class="tips">
+    <h2>Mẹo chăm cây 🌱</h2>
+    <div class="tip-cards">
+      <div class="tip-card">
+        <img src="assets/img/tip1.jpg" alt="">
+        <h4>Tưới nước hợp lý</h4>
+        <p>Tưới khi đất khô khoảng 2cm, tránh để cây úng nước.</p>
+      </div>
+      <div class="tip-card">
+        <img src="assets/img/tip2.jpg" alt="">
+        <h4>Ánh sáng tự nhiên</h4>
+        <p>Đặt cây ở nơi có ánh sáng khuếch tán, tránh nắng gắt.</p>
+      </div>
+      <div class="tip-card">
+        <img src="assets/img/tip3.jpg" alt="">
+        <h4>Bón phân đều đặn</h4>
+        <p>Dùng phân hữu cơ mỗi 2 tháng để cây luôn tươi tốt.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <p>© 2025 Flora Shop. Mọi quyền được bảo lưu.</p>
+  </footer>
 </body>
 </html>

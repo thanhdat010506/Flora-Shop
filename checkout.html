@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Thanh toán - Flora Shop</title>
+<link rel="stylesheet" href="assets/css/styles.css">
+<script defer src="assets/js/main.js"></script>
+<script defer src="js/checkout.js"></script>
+</head>
+<body>
+<header class="header">
+  <div class="logo">🌿 Flora Shop</div>
+</header>
+
+<main class="container">
+  <h2>Thanh toán</h2>
+  <form id="checkoutForm">
+    <input id="c_name" placeholder="Họ tên" required />
+    <input id="c_phone" placeholder="Số điện thoại" />
+    <input id="c_address" placeholder="Địa chỉ giao hàng" required />
+    <select id="c_payment">
+      <option>Tiền mặt</option>
+      <option>Chuyển khoản</option>
+    </select>
+    <button class="btn" type="submit">Xác nhận</button>
+  </form>
+</main>
+
+<footer class="footer"><p>© 2025 Flora Shop</p></footer>
+</body>
+</html>
