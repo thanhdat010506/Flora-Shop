@@ -161,3 +161,114 @@ function deleteUser(i) {
 }
 
 renderUsers();
+// ================== QUẢN LÝ SẢN PHẨM ==================
+if (!localStorage.getItem("products")) {
+  const demoProducts = [
+    {
+      name: "Hoa Hồng Đỏ",
+      price: 180000,
+      image: "https://th.bing.com/th/id/OIP.KgUlM9X5f_062u7a_6bAxQHaFk?w=245&h=183&c=7&r=0&o=7&dpr=2&pid=1.7",
+      desc: "Biểu tượng của tình yêu và sự ngọt ngào.",
+    },
+    {
+      name: "Hoa Hướng Dương",
+      price: 220000,
+      image: "https://th.bing.com/th/id/OIP.lUsydUZW4GscBrT3Cxi6HAHaE8?w=247&h=180&c=7&r=0&o=7&dpr=2&pid=1.7",
+      desc: "Hoa của niềm tin và hy vọng, hướng về ánh sáng.",
+    },
+  ];
+  localStorage.setItem("products", JSON.stringify(demoProducts));
+}
+
+let products = JSON.parse(localStorage.getItem("products")) || [];
+const productTable = document.querySelector("#plist tbody");
+
+function renderProducts() {
+  if (!productTable) return;
+  if (products.length === 0) {
+    productTable.innerHTML = `<tr><td colspan="5">Chưa có sản phẩm nào</td></tr>`;
+    return;
+  }
+
+  productTable.innerHTML = products.map(
+    (p, i) => `
+    <tr>
+      <td>${p.name}</td>
+      <td>${p.price.toLocaleString()}₫</td>
+      <td><img src="${p.image}" alt="" width="60"></td>
+      <td>${p.desc || ""}</td>
+      <td>
+        <button class="btn-edit" onclick="openProductModal(true, ${i})">✏️</button>
+        <button class="btn-del" onclick="deleteProduct(${i})">🗑️</button>
+      </td>
+    </tr>`
+  ).join("");
+  localStorage.setItem("products", JSON.stringify(products));
+}
+
+// Modal thêm/sửa
+const pmodal = document.getElementById("productModal");
+const addProductBtn = document.getElementById("addProductBtn");
+const saveProductBtn = document.getElementById("saveProductBtn");
+const cancelProductBtn = document.getElementById("cancelProductBtn");
+let editProductIndex = -1;
+
+function openProductModal(edit = false, i = null) {
+  pmodal.style.display = "flex";
+  if (edit) {
+    editProductIndex = i;
+    document.getElementById("modalTitle").textContent = "Sửa sản phẩm";
+    const p = products[i];
+    document.getElementById("pname").value = p.name;
+    document.getElementById("pprice").value = p.price;
+    document.getElementById("pimage").value = p.image;
+    document.getElementById("pdesc").value = p.desc;
+  } else {
+    editProductIndex = -1;
+    document.getElementById("modalTitle").textContent = "Thêm sản phẩm";
+    document.getElementById("pname").value = "";
+    document.getElementById("pprice").value = "";
+    document.getElementById("pimage").value = "";
+    document.getElementById("pdesc").value = "";
+  }
+}
+
+function closeProductModal() {
+  pmodal.style.display = "none";
+}
+
+addProductBtn?.addEventListener("click", () => openProductModal(false));
+cancelProductBtn?.addEventListener("click", closeProductModal);
+
+saveProductBtn?.addEventListener("click", () => {
+  const name = document.getElementById("pname").value.trim();
+  const price = parseInt(document.getElementById("pprice").value.trim());
+  const image = document.getElementById("pimage").value.trim();
+  const desc = document.getElementById("pdesc").value.trim();
+  if (!name || !price || !image) {
+    alert("Vui lòng nhập đầy đủ thông tin!");
+    return;
+  }
+
+  const product = { name, price, image, desc };
+
+  if (editProductIndex >= 0) {
+    products[editProductIndex] = product;
+  } else {
+    products.push(product);
+  }
+
+  localStorage.setItem("products", JSON.stringify(products));
+  renderProducts();
+  closeProductModal();
+});
+
+function deleteProduct(i) {
+  if (confirm("Bạn có chắc muốn xóa sản phẩm này không?")) {
+    products.splice(i, 1);
+    localStorage.setItem("products", JSON.stringify(products));
+    renderProducts();
+  }
+}
+
+renderProducts();

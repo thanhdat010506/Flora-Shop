@@ -1,75 +1,43 @@
 <!DOCTYPE html>
 <html lang="vi">
-<head><meta charset="utf-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/><title>Quản lý SP</title>
-<link rel="stylesheet" href="../assets/css/styles.css"></head>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Quản lý sản phẩm - Flora Admin</title>
+  <link rel="stylesheet" href="../assets/css/admin.css">
+  <script defer src="../assets/js/admin.js"></script>
+</head>
 <body>
-<div class="sidebar">
-  <h2>Flora Admin</h2>
-  <ul>
-    <li><a href="dashboard.html">Tổng quan</a></li>
-    <li><a href="manage_products.html" class="active">Sản phẩm</a></li>
-  </ul>
-</div>
-<div class="main">
-  <h1>Quản lý sản phẩm</h1>
+  <aside class="sidebar">
+    <h2>🌿 Flora Admin</h2>
+    <ul>
+      <li><a href="dashboard.html">Tổng quan</a></li>
+      <li><a href="manage_products.html" class="active">Sản phẩm</a></li>
+      <li><a href="manage_users.html">Người dùng</a></li>
+      <li><a href="manage_orders.html">Đơn hàng</a></li>
+    </ul>
+  </aside>
+  <!-- Modal thêm/sửa sản phẩm -->
+  <div id="productModal" class="modal">
+    <div class="modal-content">
+      <h2 id="modalTitle">Thêm sản phẩm</h2>
+      <label>Tên sản phẩm:</label>
+      <input type="text" id="pname" placeholder="Nhập tên sản phẩm...">
 
-<form id="addProductForm" class="form-inline">
-  <input type="text" id="pname" placeholder="Tên sản phẩm" required>
-  <input type="number" id="pprice" placeholder="Giá (VNĐ)" required>
-  <input type="text" id="pimage" placeholder="Link ảnh (URL)">
-  <textarea id="pdesc" placeholder="Mô tả sản phẩm"></textarea>
-  <button type="submit">Thêm</button>
-</form>
+      <label>Giá:</label>
+      <input type="number" id="pprice" placeholder="Nhập giá...">
 
-<table id="plist" border="1" style="width:100%;margin-top:20px;">
-  <thead>
-    <tr>
-      <th>Tên</th><th>Giá</th><th>Ảnh</th><th>Mô tả</th><th>Hành động</th>
-    </tr>
-  </thead>
-  <tbody></tbody>
-</table>
+      <label>Link ảnh:</label>
+      <input type="text" id="pimage" placeholder="Dán link ảnh vào đây...">
 
-</div>
+      <label>Mô tả:</label>
+      <textarea id="pdesc" placeholder="Nhập mô tả sản phẩm..." rows="3"></textarea>
 
-<script src="assets/js/admin.js"></script>
-<script>
-Admin.requireAdmin();
-let products = Admin.getProducts();
-const tbody = document.querySelector('#plist tbody');
-
-function render(){ 
-  products = Admin.getProducts();
-  tbody.innerHTML = products.map((p,i)=>`<tr>
-    <td>${p.name}</td><td>${p.category}</td><td>${p.price.toLocaleString()}</td><td>${p.desc||''}</td>
-    <td>
-      <button onclick="editProduct(${i})">Sửa</button>
-      <button onclick="delProduct(${i})">Xóa</button>
-    </td>
-  </tr>`).join('');
-}
-
-document.getElementById('addProductForm').addEventListener('submit', e=>{
-  e.preventDefault();
-  const name=pname.value.trim(), category=pcategory.value.trim(), price=Number(pprice.value), img=pimg.value.trim(), desc=pdesc.value.trim();
-  if(!name||!category||!price||!img){ return alert('Nhập đủ thông tin'); }
-  products.push({ id:Date.now(), name, category, price, img, desc });
-  Admin.setProducts(products); render(); e.target.reset();
-});
-
-function delProduct(i){ if(confirm('Xóa?')){ products.splice(i,1); Admin.setProducts(products); render(); } }
-
-function editProduct(i){
-  const p=products[i];
-  const name=prompt('Tên', p.name);
-  if(name===null) return;
-  const price=prompt('Giá', p.price);
-  if(price===null) return;
-  p.name=name; p.price=Number(price);
-  Admin.setProducts(products); render();
-}
-
-render();
-</script>
+      <div class="modal-actions">
+        <button id="saveProductBtn" class="btn-primary">Lưu</button>
+        <button id="cancelProductBtn" class="btn-cancel">Hủy</button>
+      </div>
+    </div>
+  </div>
 </body>
 </html>

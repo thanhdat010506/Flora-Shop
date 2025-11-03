@@ -55,3 +55,16 @@ document.addEventListener('DOMContentLoaded', ()=>{
   if(filterBtn) filterBtn.addEventListener('click', filterProducts);
   display(JSON.parse(localStorage.getItem('products')||'[]'));
 });
+const productList = document.getElementById("product-list");
+const products = JSON.parse(localStorage.getItem("products")) || [];
+
+productList.innerHTML = products.map(
+  p => `
+  <div class="product-card">
+    <img src="${p.image}" alt="${p.name}">
+    <h3>${p.name}</h3>
+    <p>${p.desc}</p>
+    <p><b>${p.price.toLocaleString()}₫</b></p>
+    <button class="btn-primary">Thêm vào giỏ</button>
+  </div>`
+).join("");
