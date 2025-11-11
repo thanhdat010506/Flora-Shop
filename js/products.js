@@ -1,12 +1,22 @@
 document.addEventListener('DOMContentLoaded', ()=>{
   const defaultProducts = [
-    { id:1,name:'Hoa hồng',category:'Hoa',price:120000,img:'assets/img/rose.jpg',desc:'Hoa hồng đẹp' },
-    { id:2,name:'Hoa hướng dương',category:'Hoa',price:90000,img:'assets/img/sunflower.jpg',desc:'Rạng rỡ' },
-    { id:3,name:'Cây phát tài',category:'Cây cảnh',price:250000,img:'assets/img/pachira.jpg',desc:'May mắn' }
+    { id:1, name:'Hoa hồng', category:'Hoa', price:120000, desc:'Hoa hồng đẹp' },
+    { id:2, name:'Hoa hướng dương', category:'Hoa', price:90000, desc:'Rạng rỡ' },
+    { id:3, name:'Cây phát tài', category:'Cây cảnh', price:250000, desc:'May mắn' },
+    { id:4, name:'Hoa tulip', category:'Hoa', price:150000, desc:'Thanh lịch' },
+    { id:5, name:'Hoa lan', category:'Hoa', price:200000, desc:'Sang trọng' },
+    { id:6, name:'Hoa cúc', category:'Hoa', price:80000, desc:'Dễ thương' },
+    { id:7, name:'Cây bonsai', category:'Cây cảnh', price:350000, desc:'Nhỏ xinh' },
+    { id:8, name:'Cây may mắn', category:'Cây cảnh', price:250000, desc:'Mang may mắn' },
+    { id:9, name:'Hoa mẫu đơn', category:'Hoa', price:180000, desc:'Quý phái' },
+    { id:10, name:'Cây sen đá', category:'Cây cảnh', price:100000, desc:'Dễ chăm' },
+    { id:11, name:'Hoa cẩm tú cầu', category:'Hoa', price:220000, desc:'Ngọt ngào' }
   ];
+  
   if(!localStorage.getItem('products') || JSON.parse(localStorage.getItem('products')).length===0){
     localStorage.setItem('products', JSON.stringify(defaultProducts));
   }
+  
   const products = JSON.parse(localStorage.getItem('products'));
   const list = document.getElementById('product-list');
   const search = document.getElementById('search');
@@ -14,16 +24,21 @@ document.addEventListener('DOMContentLoaded', ()=>{
   const priceRange = document.getElementById('priceRange');
   const filterBtn = document.getElementById('filterBtn');
 
+  function getProductImage(productId) {
+    return `assets/img/id${productId}.jpg`;
+  }
+
   function display(items){
     list.innerHTML = items.map(p=>`
       <div class="product-card">
-        <img src="${p.img||'assets/img/placeholder.png'}" alt="${p.name}">
+        <img src="${getProductImage(p.id)}" alt="${p.name}" onerror="this.src='assets/img/placeholder.png'">
         <h3>${p.name}</h3>
         <p class="desc">${p.desc||''}</p>
         <p class="price">${p.price.toLocaleString()} VNĐ</p>
         <button class="add-btn" data-id="${p.id}">Thêm vào giỏ</button>
       </div>
     `).join('');
+    
     document.querySelectorAll('.add-btn').forEach(b=>{
       b.addEventListener('click', ()=> {
         const id = Number(b.dataset.id);
@@ -48,23 +63,13 @@ document.addEventListener('DOMContentLoaded', ()=>{
     const price = priceRange.value;
     if(kw) filtered = filtered.filter(p=>p.name.toLowerCase().includes(kw));
     if(cat) filtered = filtered.filter(p=>p.category===cat);
-    if(price){ const [min,max]=price.split('-').map(Number); filtered = filtered.filter(p=>p.price>=min && p.price<=max); }
+    if(price){ 
+      const [min,max]=price.split('-').map(Number); 
+      filtered = filtered.filter(p=>p.price>=min && p.price<=max); 
+    }
     display(filtered);
   }
 
   if(filterBtn) filterBtn.addEventListener('click', filterProducts);
   display(JSON.parse(localStorage.getItem('products')||'[]'));
 });
-const productList = document.getElementById("product-list");
-const products = JSON.parse(localStorage.getItem("products")) || [];
-
-productList.innerHTML = products.map(
-  p => `
-  <div class="product-card">
-    <img src="${p.image}" alt="${p.name}">
-    <h3>${p.name}</h3>
-    <p>${p.desc}</p>
-    <p><b>${p.price.toLocaleString()}₫</b></p>
-    <button class="btn-primary">Thêm vào giỏ</button>
-  </div>`
-).join("");
