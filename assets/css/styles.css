@@ -7,6 +7,75 @@
   box-sizing: border-box;
   font-family: 'Quicksand', sans-serif;
 }
+.cart-item {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  padding: 20px;
+  background: white;
+  border-radius: 12px;
+  margin-bottom: 15px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+
+.cart-item img {
+  width: 120px;
+  height: 120px;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+.cart-item h4 {
+  color: #2f6f3e;
+  margin-bottom: 5px;
+}
+
+.cart-item .price {
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 10px;
+}
+
+.qty {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.qty button {
+  background: #2f6f3e;
+  color: white;
+  border: none;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.qty span {
+  font-weight: 600;
+  min-width: 20px;
+  text-align: center;
+}
+
+.rm {
+  background: #e74c3c;
+  color: white;
+  border: none;
+  padding: 8px 15px;
+  border-radius: 6px;
+  cursor: pointer;
+  margin-left: auto;
+}
+
+.cart-total {
+  text-align: center;
+  margin: 20px 0;
+  padding: 20px;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
 
 body {
   background-color: #fdfbf6; /* trắng ngà nhẹ */
