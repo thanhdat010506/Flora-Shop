@@ -9,9 +9,6 @@
   function setOrders(o){ localStorage.setItem('history', JSON.stringify(o)); }
   window.Admin = { requireAdmin, getUsers, setUsers, getProducts, setProducts, getOrders, setOrders };
 })();
-// =============== QUẢN LÝ SẢN PHẨM ===============
-let products = JSON.parse(localStorage.getItem("products")) || [];
-const tbody = document.querySelector("#plist tbody");
 
 function renderProducts() {
   tbody.innerHTML = products
@@ -66,7 +63,6 @@ function deleteProduct(i) {
 }
 
 renderProducts();
-// ================== QUẢN LÝ NGƯỜI DÙNG (có popup) ==================
 if (!localStorage.getItem("users")) {
   const demoUsers = [
     { name: "Nguyễn Văn A", email: "a@gmail.com", role: "user" },

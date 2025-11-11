@@ -1,32 +1,141 @@
 <!DOCTYPE html>
 <html lang="vi">
-<head><meta charset="utf-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/><title>Admin Dashboard</title>
-<link rel="stylesheet" href="../assets/css/styles.css"></head>
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>Flora Admin - Dashboard</title>
+
+  <link rel="stylesheet" href="assets/css/admin.css">
+
+  <style>
+
+    .main {
+      padding: 40px;
+      background: #f4f6f2;
+      height: 100vh;
+      overflow-y: auto;
+    }
+
+    .main h1 {
+      text-align: center;
+      margin-bottom: 30px;
+      font-size: 32px;
+      color: #1b5e20;
+      font-weight: 700;
+    }
+
+    .cards {
+      display: flex;
+      justify-content: space-between;
+      gap: 20px;
+      margin-top: 20px;
+    }
+
+    .card.stat {
+      flex: 1;
+      background: #ffffff;
+      padding: 25px;
+      border-radius: 18px;
+      box-shadow: 0 6px 18px rgba(0,0,0,0.1);
+      text-align: center;
+      transition: .2s;
+      border-left: 6px solid #1b5e20;
+      position: relative;
+    }
+
+    .card.stat:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+    }
+
+    .card.stat h3 {
+      margin: 0;
+      font-size: 20px;
+      font-weight: 600;
+      color: #2e7d32;
+      margin-bottom: 12px;
+    }
+
+    .card.stat p {
+      font-size: 34px;
+      font-weight: 800;
+      color: #1b5e20;
+      margin: 0;
+    }
+
+    /* Icon ở góc card */
+    .card-icon {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      font-size: 40px;
+      opacity: 0.17;
+      color: #1b5e20;
+    }
+  </style>
+
+</head>
+
 <body>
-<div class="sidebar">
-  <h2>Flora Admin</h2>
+
+<!-- Sidebar -->
+<aside class="sidebar">
+  <h2>🌿Flora Admin</h2>
   <ul>
     <li><a href="dashboard.html" class="active">Tổng quan</a></li>
     <li><a href="manage_products.html">Sản phẩm</a></li>
     <li><a href="manage_users.html">Người dùng</a></li>
+    <li><a href="manage_orders.html">Đơn hàng</a></li>
     <li><a href="#" onclick="logout()">Đăng xuất</a></li>
   </ul>
-</div>
-<div class="main">
-  <h1>Tổng quan</h1>
+</aside>
+
+<!-- Main -->
+<main class="main">
+  <h1>📊 Tổng quan hệ thống</h1>
+
   <div class="cards">
-    <div class="card"><h3>Người dùng</h3><p id="m_users">0</p></div>
-    <div class="card"><h3>Sản phẩm</h3><p id="m_products">0</p></div>
-    <div class="card"><h3>Đơn hàng</h3><p id="m_orders">0</p></div>
+
+    <div class="card stat">
+      <div class="card-icon">👤</div>
+      <h3>Người dùng</h3>
+      <p id="m_users">0</p>
+    </div>
+
+    <div class="card stat">
+      <div class="card-icon">🌸</div>
+      <h3>Sản phẩm</h3>
+      <p id="m_products">0</p>
+    </div>
+
+    <div class="card stat">
+      <div class="card-icon">🛒</div>
+      <h3>Đơn hàng</h3>
+      <p id="m_orders">0</p>
+    </div>
+
   </div>
-</div>
+</main>
+
 <script src="assets/js/admin.js"></script>
+
 <script>
 if(!localStorage.getItem('isAdmin')) location.href='admin_login.html';
-document.getElementById('m_users').textContent = JSON.parse(localStorage.getItem('users')||'[]').length;
-document.getElementById('m_products').textContent = JSON.parse(localStorage.getItem('products')||'[]').length;
-document.getElementById('m_orders').textContent = JSON.parse(localStorage.getItem('history')||'[]').length;
-function logout(){ localStorage.removeItem('isAdmin'); location.href='admin_login.html'; }
+
+document.getElementById('m_users').textContent =
+  JSON.parse(localStorage.getItem('users') || '[]').length;
+
+document.getElementById('m_products').textContent =
+  JSON.parse(localStorage.getItem('products') || '[]').length;
+
+document.getElementById('m_orders').textContent =
+  JSON.parse(localStorage.getItem('history') || '[]').length;
+
+function logout() {
+  localStorage.removeItem('isAdmin');
+  location.href = 'admin_login.html';
+}
 </script>
+
 </body>
 </html>
