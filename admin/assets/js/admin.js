@@ -28,7 +28,63 @@
   window.Admin = { requireAdmin, getUsers, setUsers, getProducts, setProducts, getOrders, setOrders };
 })();
 
+<<<<<<< HEAD
 /* ================== 🌿 Seed dữ liệu demo ================== */
+=======
+function renderProducts() {
+  tbody.innerHTML = products
+    .map(
+      (p, i) => `
+    <tr>
+      <td>${p.name}</td>
+      <td>${p.price.toLocaleString()}đ</td>
+      <td><img src="${p.image || ''}" alt="" width="60"></td>
+      <td>${p.desc || ''}</td>
+      <td>
+        <button onclick="editProduct(${i})">✏️</button>
+        <button onclick="deleteProduct(${i})">🗑️</button>
+      </td>
+    </tr>`
+    )
+    .join("");
+  localStorage.setItem("products", JSON.stringify(products));
+}
+
+document
+  .getElementById("addProductForm")
+  ?.addEventListener("submit", (e) => {
+    e.preventDefault();
+    const name = pname.value.trim();
+    const price = parseInt(pprice.value);
+    const image = pimage.value.trim();
+    const desc = pdesc.value.trim();
+    if (!name || isNaN(price)) return alert("Điền đủ thông tin!");
+    products.push({ name, price, image, desc });
+    renderProducts();
+    e.target.reset();
+  });
+
+function editProduct(i) {
+  const p = products[i];
+  const name = prompt("Tên mới:", p.name);
+  const price = parseInt(prompt("Giá mới:", p.price));
+  const image = prompt("Link ảnh mới:", p.image);
+  const desc = prompt("Mô tả mới:", p.desc);
+  if (name && !isNaN(price)) {
+    products[i] = { name, price, image, desc };
+    renderProducts();
+  }
+}
+
+function deleteProduct(i) {
+  if (confirm("Xóa sản phẩm này?")) {
+    products.splice(i, 1);
+    renderProducts();
+  }
+}
+
+renderProducts();
+>>>>>>> 8685dec1e4d3243d85daa2b26178a771f92e6956
 if (!localStorage.getItem("users")) {
   const demoUsers = [
     { name: "Nguyễn Văn A", email: "a@gmail.com", role: "user" },
