@@ -1,45 +1,79 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Quản lý sản phẩm - Flora Admin</title>
-  <link rel="stylesheet" href="../assets/css/styles.css">
-  <script defer src="../assets/js/admin.js"></script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Flora Admin - Sản phẩm</title>
+
+<link rel="stylesheet" href="assets/css/admin.css">
+<script defer src="assets/js/admin.js"></script>
 </head>
+
 <body>
-  <aside class="sidebar">
-      <h2>🌿 Flora Admin</h2>
-      <ul>
-        <li><a href="dashboard.html">Tổng quan</a></li>
-        <li><a href="manage_products.html" class="active">Sản phẩm</a></li>
-        <li><a href="manage_users.html">Người dùng</a></li>
-        <li><a href="manage_orders.html">Đơn hàng</a></li>
-      </ul>
-  </aside>
-<div class="main">
+
+<aside class="sidebar">
+  <h2><a href="../index.html" class="home-link">🌿 Flora Admin</a></h2>
+  <ul>
+    <li><a href="dashboard.html">Tổng quan</a></li>
+    <li><a href="manage_products.html" class="active">Sản phẩm</a></li>
+    <li><a href="manage_users.html">Người dùng</a></li>
+    <li><a href="manage_orders.html">Đơn hàng</a></li>
+    <li><a href="#" onclick="logout()">Đăng xuất</a></li>
+  </ul>
+</aside>
+
+<main class="main">
   <h1>Quản lý sản phẩm</h1>
-  <!-- Modal thêm/sửa sản phẩm -->
-  <div id="productModal" class="modal">
-    <div class="modal-content">
-      <h2 id="modalTitle">Thêm sản phẩm</h2>
-      <label>Tên sản phẩm:</label>
-      <input type="text" id="pname" placeholder="Nhập tên sản phẩm...">
 
-      <label>Giá:</label>
-      <input type="number" id="pprice" placeholder="Nhập giá...">
+  <button class="btn-add" id="addProductBtn">+ Thêm sản phẩm</button>
 
-      <label>Link ảnh:</label>
-      <input type="text" id="pimage" placeholder="Dán link ảnh vào đây...">
+  <div class="table-box">
+    <table id="plist">
+      <thead>
+        <tr>
+          <th>Tên</th>
+          <th>Giá</th>
+          <th>Ảnh</th>
+          <th>Mô tả</th>
+          <th style="width:130px;">Hành động</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+  </div>
+</main>
 
-      <label>Mô tả:</label>
-      <textarea id="pdesc" placeholder="Nhập mô tả sản phẩm..." rows="3"></textarea>
+<!-- Modal -->
+<div id="productModal" class="modal">
+  <div class="modal-content">
+    <h2 id="modalTitle">Thêm sản phẩm</h2>
 
-      <div class="modal-actions">
-        <button id="saveProductBtn" class="btn-primary">Lưu</button>
-        <button id="cancelProductBtn" class="btn-cancel">Hủy</button>
-      </div>
+    <label>Tên sản phẩm</label>
+    <input type="text" id="pname">
+
+    <label>Giá</label>
+    <input type="number" id="pprice">
+
+    <label>Link ảnh</label>
+    <input type="text" id="pimage">
+
+    <label>Mô tả</label>
+    <textarea id="pdesc" rows="3"></textarea>
+
+    <div class="modal-actions">
+      <button id="saveProductBtn" class="btn-primary">Lưu</button>
+      <button id="cancelProductBtn" class="btn-cancel">Hủy</button>
     </div>
   </div>
+</div>
+
+<script>
+function logout() {
+  localStorage.removeItem("isAdmin");
+  location.href = "admin_login.html";
+}
+</script>
+
+
 </body>
 </html>

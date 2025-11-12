@@ -31,7 +31,7 @@ document.addEventListener('DOMContentLoaded', ()=>{
   function display(items){
     list.innerHTML = items.map(p=>`
       <div class="product-card">
-        <img src="${getProductImage(p.id)}" alt="${p.name}" onerror="this.src='assets/img/placeholder.png'">
+        <img src="${p.image || getProductImage(p.id)}" alt="${p.name}" onerror="this.src='assets/img/placeholder.png'">
         <h3>${p.name}</h3>
         <p class="desc">${p.desc||''}</p>
         <p class="price">${p.price.toLocaleString()} VNĐ</p>
@@ -48,13 +48,23 @@ document.addEventListener('DOMContentLoaded', ()=>{
   }
 
   function addToCart(id){
-    const prod = JSON.parse(localStorage.getItem('products')).find(p=>p.id===id);
-    let cart = JSON.parse(localStorage.getItem('cart')||'[]');
-    const ex = cart.find(i=>i.id===id);
-    if(ex) ex.qty++; else cart.push({...prod, qty:1});
-    localStorage.setItem('cart', JSON.stringify(cart));
-    alert('Đã thêm vào giỏ');
+  // 🔒 Kiểm tra xem người dùng đã đăng nhập chưa
+  const user = JSON.parse(localStorage.getItem('currentUser') || 'null');
+  if (!user) {
+    alert("Vui lòng đăng nhập để mua hàng!");
+    location.href = "login.html";
+    return;
   }
+
+  const prod = JSON.parse(localStorage.getItem('products')).find(p=>p.id===id);
+  let cart = JSON.parse(localStorage.getItem('cart')||'[]');
+  const ex = cart.find(i=>i.id===id);
+  if(ex) ex.qty++;
+  else cart.push({...prod, qty:1});
+  
+  localStorage.setItem('cart', JSON.stringify(cart));
+  alert('Đã thêm vào giỏ');
+}
 
   function filterProducts(){
     let filtered = JSON.parse(localStorage.getItem('products')||'[]');

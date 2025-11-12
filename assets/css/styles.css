@@ -598,3 +598,29 @@ tr:hover {
   .overlay h1 { font-size: 1.3rem; }
   .overlay p { font-size: 0.9rem; }
 }
+
+.btn {
+  background-color: #2f6f3e;
+  color: white;
+  border: none;
+  padding: 10px;
+  border-radius: 8px;
+  cursor: pointer;
+  text-align: center;
+  text-decoration: none;
+  transition: background 0.3s;
+  display: inline-block;
+}
+
+.btn:hover {
+  background-color: #47945a;
+}
+
+.btn.ghost {
+  background-color: #2f6f3e;
+  color: white;
+}
+
+.btn.ghost:hover {
+  background-color: #47945a;
+}
