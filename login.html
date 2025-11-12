@@ -22,9 +22,8 @@
   </form>
 </main>
 <script>
-/* ===== 🌿 Flora Shop Login Logic ===== */
+  
 document.addEventListener('DOMContentLoaded', () => {
-  // ⚙️ Nếu chưa có dữ liệu user nào, seed demo
   if (!localStorage.getItem('users_seed_v7')) {
     const users = [
       { id: 'u_admin', username: 'admin123', password: '123456', role: 'admin', fullName: 'Quản trị viên' },
@@ -46,7 +45,6 @@ document.addEventListener('DOMContentLoaded', () => {
       return;
     }
 
-    // 🔍 Lấy danh sách người dùng từ localStorage
     const users = JSON.parse(localStorage.getItem('users') || '[]');
     const found = users.find(u => u.username === username && u.password === password);
 
@@ -55,10 +53,8 @@ document.addEventListener('DOMContentLoaded', () => {
       return;
     }
 
-    // ✅ Lưu session đăng nhập
     localStorage.setItem('currentUser', JSON.stringify(found));
 
-    // ⚙️ Nếu là admin → vào dashboard, nếu không → về trang chủ
     if (found.role === 'admin') {
       localStorage.setItem('isAdmin', 'true');
       location.href = 'admin/dashboard.html';
@@ -68,6 +64,38 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 });
+document.addEventListener('DOMContentLoaded', () => {
+  const form = document.getElementById('loginForm');
+
+  form.addEventListener('submit', e => {
+    e.preventDefault();
+    const username = document.getElementById('username').value.trim();
+    const password = document.getElementById('password').value.trim();
+
+    // Lấy danh sách users
+    const users = JSON.parse(localStorage.getItem('users') || '[]');
+    const found = users.find(u => u.username === username && u.password === password);
+
+    if (!found) {
+      alert('Sai tên đăng nhập hoặc mật khẩu!');
+      return;
+    }
+
+    // ✅ Lưu thông tin người dùng đang đăng nhập
+    localStorage.setItem('currentUser', JSON.stringify(found));
+
+    // Nếu là admin → qua dashboard
+    if (found.role === 'admin') {
+      localStorage.setItem('isAdmin', 'true');
+      location.href = 'admin/dashboard.html';
+    } else {
+      localStorage.removeItem('isAdmin');
+      alert('Đăng nhập thành công!');
+      location.href = 'index.html';
+    }
+  });
+});
+
 </script>
 
 </body>
