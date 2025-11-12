@@ -30,7 +30,7 @@ document.addEventListener('DOMContentLoaded', ()=>{
 
   function display(items){
     list.innerHTML = items.map(p=>`
-      <div class="product-card">
+      <div class="product-card" onclick="viewProductDetail(${p.id})" style="cursor:pointer;">
         <img src="${getProductImage(p.id)}" alt="${p.name}" onerror="this.src='assets/img/placeholder.png'">
         <h3>${p.name}</h3>
         <p class="desc">${p.desc||''}</p>
@@ -73,3 +73,7 @@ document.addEventListener('DOMContentLoaded', ()=>{
   if(filterBtn) filterBtn.addEventListener('click', filterProducts);
   display(JSON.parse(localStorage.getItem('products')||'[]'));
 });
+
+function viewProductDetail(productId) {
+  window.location.href = `detail.html?id=${productId}`;
+}
