@@ -30,13 +30,10 @@ document.addEventListener('DOMContentLoaded', ()=>{
 
   function display(items){
     list.innerHTML = items.map(p=>`
-<<<<<<< HEAD
-      <div class="product-card">
-        <img src="${p.image || getProductImage(p.id)}" alt="${p.name}" onerror="this.src='assets/img/placeholder.png'">
-=======
+
       <div class="product-card" onclick="viewProductDetail(${p.id})" style="cursor:pointer;">
         <img src="${getProductImage(p.id)}" alt="${p.name}" onerror="this.src='assets/img/placeholder.png'">
->>>>>>> 8685dec1e4d3243d85daa2b26178a771f92e6956
+
         <h3>${p.name}</h3>
         <p class="desc">${p.desc||''}</p>
         <p class="price">${p.price.toLocaleString()} VNĐ</p>

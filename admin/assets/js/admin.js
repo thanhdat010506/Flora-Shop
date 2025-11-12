@@ -28,9 +28,6 @@
   window.Admin = { requireAdmin, getUsers, setUsers, getProducts, setProducts, getOrders, setOrders };
 })();
 
-<<<<<<< HEAD
-/* ================== 🌿 Seed dữ liệu demo ================== */
-=======
 function renderProducts() {
   tbody.innerHTML = products
     .map(
@@ -84,7 +81,7 @@ function deleteProduct(i) {
 }
 
 renderProducts();
->>>>>>> 8685dec1e4d3243d85daa2b26178a771f92e6956
+
 if (!localStorage.getItem("users")) {
   const demoUsers = [
     { name: "Nguyễn Văn A", email: "a@gmail.com", role: "user" },
