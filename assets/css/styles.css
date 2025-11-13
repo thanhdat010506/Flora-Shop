@@ -1,4 +1,4 @@
-/* 🌿 Reset & Font */
+/*  RESET & CÀI ĐẶT FONT CHỮ */
 @import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600&display=swap');
 
 * {
@@ -7,6 +7,8 @@
   box-sizing: border-box;
   font-family: 'Quicksand', sans-serif;
 }
+
+/*  CHI TIẾT SẢN PHẨM */
 .product-detail {
   background: white;
   border-radius: 16px;
@@ -60,6 +62,7 @@
   margin-bottom: 30px;
 }
 
+/*  NÚT MUA HÀNG */
 .btn-buy {
   background: #2f6f3e;
   color: white;
@@ -94,6 +97,7 @@
   transform: translateY(-2px);
 }
 
+/*  MÔ TẢ THÊM TRONG TRANG CHI TIẾT */
 .product-features {
   background: #f8f9fa;
   padding: 20px;
@@ -115,6 +119,7 @@
   color: #555;
 }
 
+/*  RESPONSIVE CHO TRANG CHI TIẾT */
 @media (max-width: 768px) {
   .detail-container {
     grid-template-columns: 1fr;
@@ -129,6 +134,8 @@
     flex-direction: column;
   }
 }
+
+/*  GIỎ HÀNG */
 .cart-item {
   display: flex;
   align-items: center;
@@ -199,13 +206,14 @@
   box-shadow: 0 2px 8px rgba(0,0,0,0.05);
 }
 
+/*  NỀN VÀ MÀU CHỦ ĐẠO */
 body {
   background-color: #fdfbf6; /* trắng ngà nhẹ */
   color: #333;
   line-height: 1.6;
 }
 
-/* 🌿 Header */
+/*  HEADER */
 .header {
   display: flex;
   justify-content: space-between;
@@ -217,7 +225,7 @@ body {
   top: 0;
   z-index: 100;
 }
-
+/*  THANH ĐIỀU HƯỚNG (NAVIGATION) */
 .logo {
   font-size: 22px;
   font-weight: bold;
@@ -242,6 +250,7 @@ body {
   color: #2f6f3e;
 }
 
+/*  ICON TÀI KHOẢN + GIỎ HÀNG */
 .icons a {
   margin-left: 15px;
   font-size: 20px;
@@ -260,7 +269,7 @@ body {
   cursor: pointer;
 }
 
-/* 🌿 Footer */
+/*  CHÂN TRANG (FOOTER) */
 .footer {
   text-align: center;
   padding: 20px;
@@ -270,14 +279,14 @@ body {
   border-top: 1px solid #c8e0d0;
 }
 
-/* 🌿 Common containers */
+/*  CONTAINER CHUNG */
 main, .container {
   max-width: 1200px;
   margin: 0 auto;
   padding: 30px 20px;
 }
 
-/* 🌿 Product list */
+/*  LƯỚI SẢN PHẨM (TRANG PRODUCT) */
 .product-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
@@ -328,6 +337,7 @@ main, .container {
   margin: 8px 0;
 }
 
+/*  NÚT THÊM GIỎ HÀNG */
 .add-btn {
   background-color: #2f6f3e;
   color: #fff;
@@ -343,7 +353,7 @@ main, .container {
   transform: scale(1.05);
 }
 
-/* 🌿 Filter bar */
+/*  THANH LỌC (TÌM KIẾM, PHÂN LOẠI) */
 .filter-bar {
   display: flex;
   flex-wrap: wrap;
@@ -374,7 +384,7 @@ main, .container {
   background-color: #47945a;
 }
 
-/* 🌿 Forms (login, register, contact) */
+/*  FORM CHUNG (LOGIN, REGISTER, CONTACT) */
 form {
   display: flex;
   flex-direction: column;
@@ -409,7 +419,7 @@ form button:hover {
   background-color: #47945a;
 }
 
-/* 🌿 ADMIN layout */
+/*  KHU ADMIN */
 .sidebar {
   position: fixed;
   left: 0;
@@ -454,6 +464,7 @@ form button:hover {
   padding: 25px;
 }
 
+/*  FORM NGẮN TRONG ADMIN */
 .form-inline input,
 .form-inline button {
   padding: 8px;
@@ -474,6 +485,7 @@ form button:hover {
   background-color: #47945a;
 }
 
+/*  BẢNG TRONG ADMIN */
 table {
   width: 100%;
   border-collapse: collapse;
@@ -497,7 +509,7 @@ tr:hover {
   background-color: #f4f9f6;
 }
 
-/* 🌿 Page-specific styles */
+/*  CÁC TRANG RIÊNG (about, contact, history) */
 .about,
 .contact,
 .history {
@@ -509,13 +521,13 @@ tr:hover {
   box-shadow: 0 2px 8px rgba(0,0,0,0.05);
 }
 
-/* 🌿 Animation */
+/*  HIỆU ỨNG MỜ XUẤT HIỆN */
 @keyframes fadeIn {
   from { opacity: 0; transform: translateY(10px); }
   to { opacity: 1; transform: translateY(0); }
 }
 
-/* 🌿 Responsive */
+/*  RESPONSIVE CHUNG */
 @media (max-width: 768px) {
   .nav ul {
     display: none;
@@ -546,7 +558,7 @@ tr:hover {
     margin-left: 0;
   }
 }
-/* 🌿 Hero Section */
+/*  HERO SECTION — banner giới thiệu chính ở trang chủ */
 .hero {
   background: url('../img/banner.jpg') center/cover no-repeat;
   color: #2f6f3e;
@@ -589,7 +601,7 @@ tr:hover {
   background: #47945a;
 }
 
-/* 🌿 Tips Section */
+/*  MỤC MẸO CHĂM CÂY */
 .tips {
   text-align: center;
   padding: 50px 20px;
@@ -640,7 +652,8 @@ tr:hover {
 .btn-secondary:hover {
   background: #c8e0d0;
 }
-/* 🌿 Hero Slider */
+
+/*  HERO SLIDER — trình chiếu ảnh tự động */
 .hero-slider {
   position: relative;
   overflow: hidden;
@@ -694,6 +707,7 @@ tr:hover {
   color: #333;
 }
 
+/* Nút chuyển slide */
 .prev, .next {
   position: absolute;
   top: 50%;
@@ -721,6 +735,7 @@ tr:hover {
   .overlay p { font-size: 0.9rem; }
 }
 
+/*  NÚT CHUNG (sử dụng nhiều nơi) */
 .btn {
   background-color: #2f6f3e;
   color: white;
@@ -738,6 +753,7 @@ tr:hover {
   background-color: #47945a;
 }
 
+/*  NÚT DẠNG GHOST */
 .btn.ghost {
   background-color: #2f6f3e;
   color: white;
@@ -746,15 +762,19 @@ tr:hover {
 .btn.ghost:hover {
   background-color: #47945a;
 }
+
+/*  TRANG GIỚI THIỆU — phần hero */
 .about-hero {
   background: linear-gradient(to right, #d8f3dc, #f1faee);
   padding: 60px 20px;
   text-align: center;
 }
+
 .about-hero h1 {
   color: #2d6a4f;
   font-size: 2.2em;
 }
+
 .about-hero p {
   max-width: 700px;
   margin: 15px auto;
@@ -762,6 +782,7 @@ tr:hover {
   color: #333;
 }
 
+/*  TRANG GIỚI THIỆU — phần các thẻ (card) */
 .about-sections {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -769,65 +790,98 @@ tr:hover {
   padding: 60px 40px;
   background: #fffefb;
 }
-.about-card {
-      background: #ffffff;
-      border-radius: 16px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-      padding: 30px 25px;
-      transition: transform 0.2s, box-shadow 0.2s;
-}
-.about-card:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 6px 14px rgba(0,0,0,0.12);
-}
-.about-card i {
-      font-size: 2em;
-      color: #2d6a4f;
-      margin-bottom: 10px;
-}
-    .about-card h3 {
-      color: #1b4332;
-      margin-bottom: 10px;
-    }
-    .about-card p {
-      color: #333;
-      font-size: 0.95em;
-      line-height: 1.6;
-    }
 
-    .about-team {
-      text-align: center;
-      padding: 60px 20px;
-      background: #f8f9fa;
-    }
-    .team-members {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 30px;
-      margin-top: 30px;
-    }
-    .team-member {
-      background: #ffffff;
-      border-radius: 14px;
-      width: 240px;
-      padding: 20px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-      transition: transform 0.2s;
-    }
-    .team-member:hover {
-      transform: scale(1.03);
-    }
-    .team-member img {
-      width: 100%;
-      border-radius: 12px;
-      margin-bottom: 10px;
-    }
-    .team-member h4 {
-      margin: 5px 0;
-      color: #2d6a4f;
-    }
-    .team-member span {
-      font-size: 0.9em;
-      color: #666;
-    }
+.about-card {
+  background: #ffffff;
+  border-radius: 16px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  padding: 30px 25px;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.about-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 14px rgba(0,0,0,0.12);
+}
+
+.about-card i {
+  font-size: 2em;
+  color: #2d6a4f;
+  margin-bottom: 10px;
+}
+
+.about-card h3 {
+  color: #1b4332;
+  margin-bottom: 10px;
+}
+
+.about-card p {
+  color: #333;
+  font-size: 0.95em;
+  line-height: 1.6;
+}
+
+/*  PHẦN GIỚI THIỆU ĐỘI NGŨ */
+.about-team {
+  text-align: center;
+  padding: 60px 20px;
+  background: #f8f9fa;
+}
+
+.team-members {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 30px;
+  margin-top: 30px;
+}
+
+.team-member {
+  background: #ffffff;
+  border-radius: 14px;
+  width: 240px;
+  padding: 20px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  transition: transform 0.2s;
+}
+
+.team-member:hover {
+  transform: scale(1.03);
+}
+
+.team-member img {
+  width: 100%;
+  border-radius: 12px;
+  margin-bottom: 10px;
+}
+
+.team-member h4 {
+  margin: 5px 0;
+  color: #2d6a4f;
+}
+
+.team-member span {
+  font-size: 0.9em;
+  color: #666;
+}
+/* Thẻ thông tin khách hàng */
+.user-card h3 {
+  color: #2f6f3e;
+  margin-bottom: 10px;
+  text-align: center;
+}
+
+.user-card p {
+  color: #555;
+  margin: 5px 0;
+}
+
+#editForm input, 
+#editForm select {
+  width: 100%;
+  margin-bottom: 10px;
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+}
+

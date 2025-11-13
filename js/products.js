@@ -1,16 +1,16 @@
 document.addEventListener('DOMContentLoaded', ()=>{
   const defaultProducts = [
-    { id:1, name:'Hoa hồng', category:'Hoa', price:120000, desc:'Hoa hồng đẹp' },
-    { id:2, name:'Hoa hướng dương', category:'Hoa', price:90000, desc:'Rạng rỡ' },
-    { id:3, name:'Cây phát tài', category:'Cây cảnh', price:250000, desc:'May mắn' },
-    { id:4, name:'Hoa tulip', category:'Hoa', price:150000, desc:'Thanh lịch' },
-    { id:5, name:'Hoa lan', category:'Hoa', price:200000, desc:'Sang trọng' },
-    { id:6, name:'Hoa cúc', category:'Hoa', price:80000, desc:'Dễ thương' },
-    { id:7, name:'Cây bonsai', category:'Cây cảnh', price:350000, desc:'Nhỏ xinh' },
-    { id:8, name:'Cây may mắn', category:'Cây cảnh', price:250000, desc:'Mang may mắn' },
-    { id:9, name:'Hoa mẫu đơn', category:'Hoa', price:180000, desc:'Quý phái' },
-    { id:10, name:'Cây sen đá', category:'Cây cảnh', price:100000, desc:'Dễ chăm' },
-    { id:11, name:'Hoa cẩm tú cầu', category:'Hoa', price:220000, desc:'Ngọt ngào' }
+    { id:1, name:'Hoa hồng', category:'Hoa', price:120000, desc:'Biểu tượng của tình yêu và sự lãng mạn, hoa hồng mang vẻ đẹp quyến rũ và đầy cảm xúc.' },
+    { id:2, name:'Hoa hướng dương', category:'Hoa', price:90000, desc:'Luôn hướng về ánh sáng, hoa hướng dương thể hiện sự lạc quan, năng lượng tích cực và niềm tin vào tương lai.' },
+    { id:3, name:'Cây phát tài', category:'Cây cảnh', price:250000, desc:'Mang lại tài lộc và may mắn, cây phát tài dễ chăm sóc, phù hợp trang trí nhà cửa hoặc văn phòng.' },
+    { id:4, name:'Hoa tulip', category:'Hoa', price:150000, desc:'Vẻ đẹp thanh lịch và tinh tế, hoa tulip thường gắn liền với sự sang trọng và tình cảm nhẹ nhàng.' },
+    { id:5, name:'Hoa lan', category:'Hoa', price:200000, desc:'Sang trọng và quý phái, hoa lan là biểu tượng của sự cao cấp, thường dùng trong các dịp đặc biệt.' },
+    { id:6, name:'Hoa cúc', category:'Hoa', price:80000, desc:'Dễ thương và giản dị, hoa cúc mang đến cảm giác gần gũi, thân thiện và sự bền bỉ trong cuộc sống.' },
+    { id:7, name:'Cây bonsai', category:'Cây cảnh', price:350000, desc:'Cây bonsai nhỏ gọn, dáng uốn lượn nghệ thuật, thể hiện sự tinh tế và phong cách sống tĩnh tại.' },
+    { id:8, name:'Cây may mắn', category:'Cây cảnh', price:250000, desc:'Lá xanh tươi, tượng trưng cho sự thuận lợi và bình an, thích hợp làm quà tặng ý nghĩa.' },
+    { id:9, name:'Hoa mẫu đơn', category:'Hoa', price:180000, desc:'Quý phái và kiêu sa, hoa mẫu đơn tượng trưng cho sự giàu sang, phồn vinh và vẻ đẹp đằm thắm.' },
+    { id:10, name:'Cây sen đá', category:'Cây cảnh', price:100000, desc:'Hình dáng độc đáo, chịu hạn tốt, tượng trưng cho sự bền bỉ và tình yêu vĩnh cửu.' },
+    { id:11, name:'Hoa cẩm tú cầu', category:'Hoa', price:220000, desc:'Ngọt ngào và lãng mạn, hoa cẩm tú cầu thay đổi màu sắc theo cảm xúc, thể hiện sự tinh tế trong tình yêu.' }
   ];
   
   if(!localStorage.getItem('products') || JSON.parse(localStorage.getItem('products')).length===0){

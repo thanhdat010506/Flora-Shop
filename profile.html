@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tài khoản của tôi - Flora Shop</title>
+  <link rel="stylesheet" href="assets/css/styles.css">
+  <script defer src="js/profile.js"></script>
+</head>
+<body>
+  <header class="header">
+    <div class="logo">🌿 Flora Shop</div>
+    <nav class="nav">
+      <ul>
+        <li><a href="index.html">Trang chủ</a></li>
+        <li><a href="products.html">Sản phẩm</a></li>
+      </ul>
+    </nav>
+    <div class="icons">
+      <a href="cart.html">🛒</a>
+      <a href="profile.html" class="active">👤</a>
+    </div>
+  </header>
+
+  <main style="max-width:600px;margin:40px auto;">
+    <h2 style="text-align:center;color:#2f6f3e;">Thông tin tài khoản</h2>
+    <div id="userInfo" class="user-info" style="margin-top:20px;"></div>
+    <div style="text-align:center;margin-top:20px;">
+      <button id="editProfile" class="btn">Chỉnh sửa</button>
+      <button id="logout" class="btn" style="background:#e74c3c;">Đăng xuất</button>
+    </div>
+
+    <form id="editForm" style="display:none;margin-top:30px;">
+      <h3>Cập nhật thông tin</h3>
+      <input type="text" id="editFullname" placeholder="Họ và tên">
+      <input type="text" id="editEmail" placeholder="Email">
+      <input type="text" id="editAddress" placeholder="Địa chỉ">
+      <input type="text" id="editPhone" placeholder="Số điện thoại">
+      <select id="editGender">
+        <option value="">Giới tính</option>
+        <option value="Nam">Nam</option>
+        <option value="Nữ">Nữ</option>
+        <option value="Khác">Khác</option>
+      </select>
+      <button type="submit" class="btn">Lưu thay đổi</button>
+      <button type="button" id="cancelEdit" class="btn" style="background:#ccc;">Hủy</button>
+    </form>
+  </main>
+
+  <footer class="footer">
+    <p>© 2025 Flora Shop. Mọi quyền được bảo lưu.</p>
+  </footer>
+</body>
+</html>

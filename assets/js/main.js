@@ -127,4 +127,40 @@ function logout() {
   location.href = "../login.html";
 }
 window.logout = logout;
+// 🌿 Kiểm tra trạng thái đăng nhập khi bấm icon người
+document.addEventListener('DOMContentLoaded', () => {
+  const userIcon = document.querySelector('.fa-user, .fa-regular.fa-user');
+
+  if (userIcon) {
+    userIcon.addEventListener('click', (e) => {
+      e.preventDefault();
+
+      const currentUser = JSON.parse(localStorage.getItem('currentUser') || 'null');
+      if (currentUser) {
+        // Nếu đã đăng nhập -> đến trang thông tin cá nhân
+        window.location.href = 'profile.html';
+      } else {
+        // Nếu chưa đăng nhập -> đến trang đăng nhập
+        window.location.href = 'login.html';
+      }
+    });
+  }
+});
+document.getElementById("registerForm").addEventListener("submit", function(e){
+  e.preventDefault();
+  
+  const user = {
+    fullname: document.getElementById("fullname").value,
+    email: document.getElementById("email").value,
+    password: document.getElementById("password").value,
+    address: document.getElementById("address").value,
+    phone: document.getElementById("phone").value,
+    gender: document.getElementById("gender").value,
+    registerDate: new Date().toLocaleDateString()
+  };
+  
+  localStorage.setItem("currentUser", JSON.stringify(user));
+  alert("Đăng ký thành công!");
+  location.href = "profile.html";
+});
 

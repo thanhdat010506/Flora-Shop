@@ -14,3 +14,8 @@ document.addEventListener('DOMContentLoaded', ()=>{
     </div>
   `).join('');
 });
+localStorage.setItem('currentUser', JSON.stringify({
+  username: foundUser.username,
+  email: foundUser.email,
+  registerDate: foundUser.registerDate
+}));
