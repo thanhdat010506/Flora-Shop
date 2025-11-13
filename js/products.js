@@ -1,99 +1,131 @@
-document.addEventListener('DOMContentLoaded', ()=>{
-  const defaultProducts = [
-    { id:1, name:'Hoa hồng', category:'Hoa', price:120000, desc:'Hoa hồng đẹp' },
-    { id:2, name:'Hoa hướng dương', category:'Hoa', price:90000, desc:'Rạng rỡ' },
-    { id:3, name:'Cây phát tài', category:'Cây cảnh', price:250000, desc:'May mắn' },
-    { id:4, name:'Hoa tulip', category:'Hoa', price:150000, desc:'Thanh lịch' },
-    { id:5, name:'Hoa lan', category:'Hoa', price:200000, desc:'Sang trọng' },
-    { id:6, name:'Hoa cúc', category:'Hoa', price:80000, desc:'Dễ thương' },
-    { id:7, name:'Cây bonsai', category:'Cây cảnh', price:350000, desc:'Nhỏ xinh' },
-    { id:8, name:'Cây may mắn', category:'Cây cảnh', price:250000, desc:'Mang may mắn' },
-    { id:9, name:'Hoa mẫu đơn', category:'Hoa', price:180000, desc:'Quý phái' },
-    { id:10, name:'Cây sen đá', category:'Cây cảnh', price:100000, desc:'Dễ chăm' },
-    { id:11, name:'Hoa cẩm tú cầu', category:'Hoa', price:220000, desc:'Ngọt ngào' }
-  ];
-  
-  if(!localStorage.getItem('products') || JSON.parse(localStorage.getItem('products')).length===0){
-    localStorage.setItem('products', JSON.stringify(defaultProducts));
-  }
-  
-  const products = JSON.parse(localStorage.getItem('products'));
-  const list = document.getElementById('product-list');
-  const search = document.getElementById('search');
-  const category = document.getElementById('category');
-  const priceRange = document.getElementById('priceRange');
-  const filterBtn = document.getElementById('filterBtn');
 
-  function getProductImage(productId) {
-    return `assets/img/id${productId}.jpg`;
-  }
+    document.addEventListener("DOMContentLoaded", () => {
+      const currentUser = JSON.parse(localStorage.getItem("currentUser") || "null");
+      if (!currentUser) {
+        alert("Bạn cần đăng nhập!");
+        window.location.href = "login.html";
+        return;
+      }
+      document.getElementById("username").textContent = currentUser.username;
+      document.getElementById("logoutBtn").addEventListener("click", () => {
+        localStorage.removeItem("currentUser");
+        window.location.href = "login.html";
+      });
 
-  function display(items){
-    list.innerHTML = items.map(p=>`
+      const defaultProducts = [
+        { id: 1, name: "Hoa hồng", category: "Hoa", price: 120000, desc: "Hoa hồng đẹp" },
+        { id: 2, name: "Hoa hướng dương", category: "Hoa", price: 90000, desc: "Rạng rỡ tỏa nắng" },
+        { id: 3, name: "Cây phát tài", category: "Cây cảnh", price: 250000, desc: "Mang lại may mắn" },
+        { id: 4, name: "Hoa tulip", category: "Hoa", price: 150000, desc: "Thanh lịch và tinh tế" },
+        { id: 5, name: "Hoa lan", category: "Hoa", price: 200000, desc: "Biểu tượng sang trọng" },
+        { id: 6, name: "Hoa cúc", category: "Hoa", price: 80000, desc: "Đơn giản mà đáng yêu" },
+        { id: 7, name: "Cây bonsai", category: "Cây cảnh", price: 350000, desc: "Nghệ thuật thu nhỏ thiên nhiên" },
+        { id: 8, name: "Cây sen đá", category: "Cây cảnh", price: 100000, desc: "Dễ chăm, bền bỉ" },
+        { id: 9, name: "Hoa mẫu đơn", category: "Hoa", price: 180000, desc: "Sang trọng và quý phái" },
+        { id: 10, name: "Cây may mắn", category: "Cây cảnh", price: 220000, desc: "Mang lại tài lộc" },
+        { id: 11, name: "Hoa ly", category: "Hoa", price: 190000, desc: "Tinh khiết và thanh cao" },
+        { id: 12, name: "Hoa cẩm tú cầu", category: "Hoa", price: 210000, desc: "Ngọt ngào và nhẹ nhàng" },
+      ];
+      if (!localStorage.getItem("products")) localStorage.setItem("products", JSON.stringify(defaultProducts));
 
-      <div class="product-card" onclick="viewProductDetail(${p.id})" style="cursor:pointer;">
-        <img src="${getProductImage(p.id)}" alt="${p.name}" onerror="this.src='assets/img/placeholder.png'">
+      const list = document.getElementById("product-list");
+      const search = document.getElementById("search");
+      const category = document.getElementById("category");
+      const priceRange = document.getElementById("priceRange");
+      const filterBtn = document.getElementById("filterBtn");
+      const paginationContainer = document.getElementById("pagination");
+      const cartCount = document.getElementById("cart-count");
+      const ITEMS_PER_PAGE = 6;
+      let currentPage = 1;
+      let filteredProducts = JSON.parse(localStorage.getItem("products"));
 
-        <h3>${p.name}</h3>
-        <p class="desc">${p.desc||''}</p>
-        <p class="price">${p.price.toLocaleString()} VNĐ</p>
-        <button class="add-btn" data-id="${p.id}">Thêm vào giỏ</button>
-      </div>
-    `).join('');
-    
-    document.querySelectorAll('.add-btn').forEach(b=>{
-      b.addEventListener('click', ()=> {
-        const id = Number(b.dataset.id);
-        addToCart(id);
+      const CART_KEY = `cart_${currentUser.username}`;
+
+      function getProductImage(id) {
+        return `assets/img/id${id}.jpg`;
+      }
+
+      function updateCartCount() {
+        const cart = JSON.parse(localStorage.getItem(CART_KEY) || "[]");
+        cartCount.textContent = cart.reduce((s, i) => s + i.qty, 0);
+      }
+
+      function addToCart(id) {
+        const products = JSON.parse(localStorage.getItem("products"));
+        const prod = products.find((p) => p.id === id);
+        let cart = JSON.parse(localStorage.getItem(CART_KEY) || "[]");
+        const exist = cart.find((i) => i.id === id);
+        if (exist) exist.qty++;
+        else cart.push({ ...prod, qty: 1 });
+        localStorage.setItem(CART_KEY, JSON.stringify(cart));
+        updateCartCount();
+        alert(`Đã thêm "${prod.name}" vào giỏ hàng!`);
+      }
+
+      function display(products) {
+        const start = (currentPage - 1) * ITEMS_PER_PAGE;
+        const end = start + ITEMS_PER_PAGE;
+        const items = products.slice(start, end);
+        list.innerHTML = items
+          .map(
+            (p) => `
+              <div class="product-card">
+                <img src="${getProductImage(p.id)}" alt="${p.name}" onerror="this.src='assets/img/placeholder.png'">
+                <h3>${p.name}</h3>
+                <p>${p.desc}</p>
+                <p class="price">${p.price.toLocaleString()} VNĐ</p>
+                <button class="add-btn" data-id="${p.id}">Thêm vào giỏ</button>
+              </div>`
+          )
+          .join("");
+        document.querySelectorAll(".add-btn").forEach((btn) =>
+          btn.addEventListener("click", () => addToCart(Number(btn.dataset.id)))
+        );
+        renderPagination(products.length);
+      }
+
+      function renderPagination(totalItems) {
+        const totalPages = Math.ceil(totalItems / ITEMS_PER_PAGE);
+        let html = `<div class="pagination-info">Trang ${currentPage} / ${totalPages} (${totalItems} sản phẩm)</div>`;
+        html += '<div class="pagination-buttons">';
+        for (let i = 1; i <= totalPages; i++) {
+          html += `<button class="page-btn ${i === currentPage ? "active" : ""}" data-page="${i}">${i}</button>`;
+        }
+        html += "</div>";
+        paginationContainer.innerHTML = html;
+        paginationContainer.querySelectorAll(".page-btn").forEach((btn) =>
+          btn.addEventListener("click", (e) => {
+            currentPage = Number(e.target.dataset.page);
+            display(filteredProducts);
+          })
+        );
+      }
+
+      function filterProducts() {
+        const all = JSON.parse(localStorage.getItem("products"));
+        const kw = (search.value || "").toLowerCase();
+        const cat = category.value;
+        const price = priceRange.value;
+        filteredProducts = all.filter((p) => {
+          const matchName = p.name.toLowerCase().includes(kw);
+          const matchCat = cat ? p.category === cat : true;
+          let matchPrice = true;
+          if (price) {
+            const [min, max] = price.split("-").map(Number);
+            matchPrice = p.price >= min && (max ? p.price <= max : true);
+          }
+          return matchName && matchCat && matchPrice;
+        });
+        currentPage = 1;
+        display(filteredProducts);
+      }
+
+      filterBtn.addEventListener("click", filterProducts);
+      display(filteredProducts);
+      updateCartCount();
+
+      window.addEventListener("storage", (e) => {
+        if (e.key === CART_KEY) updateCartCount();
       });
     });
-  }
-
-  function addToCart(id){
-  // 🔒 Kiểm tra đăng nhập
-  const user = JSON.parse(localStorage.getItem('currentUser') || 'null');
-  if (!user) {
-    alert("Vui lòng đăng nhập để mua hàng!");
-    location.href = "login.html";
-    return;
-  }
-
-  // 🔍 Kiểm tra sản phẩm tồn tại
-  const products = JSON.parse(localStorage.getItem('products') || '[]');
-  const prod = products.find(p => p.id === id);
-  if (!prod) {
-    alert("Sản phẩm không hợp lệ hoặc dữ liệu bị lỗi!");
-    return;
-  }
-
-  // 🛒 Thêm vào giỏ
-  let cart = JSON.parse(localStorage.getItem('cart') || '[]');
-  const ex = cart.find(i => i.id === id);
-  if (ex) ex.qty++;
-  else cart.push({ ...prod, qty: 1 });
-
-  localStorage.setItem('cart', JSON.stringify(cart));
-  alert(`Đã thêm "${prod.name}" vào giỏ hàng!`);
-}
-
-  function filterProducts(){
-    let filtered = JSON.parse(localStorage.getItem('products')||'[]');
-    const kw = (search.value||'').toLowerCase();
-    const cat = category.value;
-    const price = priceRange.value;
-    if(kw) filtered = filtered.filter(p=>p.name.toLowerCase().includes(kw));
-    if(cat) filtered = filtered.filter(p=>p.category===cat);
-    if(price){ 
-      const [min,max]=price.split('-').map(Number); 
-      filtered = filtered.filter(p=>p.price>=min && p.price<=max); 
-    }
-    display(filtered);
-  }
-
-  if(filterBtn) filterBtn.addEventListener('click', filterProducts);
-  display(JSON.parse(localStorage.getItem('products')||'[]'));
-});
-
-function viewProductDetail(productId) {
-  window.location.href = `detail.html?id=${productId}`;
-}
+  
