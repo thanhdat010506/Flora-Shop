@@ -12,19 +12,25 @@ document.addEventListener('DOMContentLoaded', () => {
   const CART_KEY = `cart_${currentUser.username}`;
   const form = document.getElementById('checkoutForm');
   const paymentSelect = document.getElementById('c_payment');
-  const cardInfo = document.getElementById('cardInfo');
+  const bankInfo = document.getElementById('bankInfo');
+  const visaInfo = document.getElementById('visaInfo');
 
-  // 🔧 THÊM: Xử lý hiển thị form thẻ khi chọn Chuyển khoản
-  if (paymentSelect && cardInfo) {
+  // 🔧 Xử lý hiển thị form thanh toán theo phương thức
+  if (paymentSelect) {
     paymentSelect.addEventListener('change', function() {
       console.log('Payment method changed to:', this.value);
+      
+      // Ẩn tất cả form
+      bankInfo.style.display = 'none';
+      visaInfo.style.display = 'none';
+      
+      // Hiển thị form tương ứng
       if (this.value === 'Chuyển khoản') {
-        cardInfo.style.display = 'block';
-      } else {
-        cardInfo.style.display = 'none';
+        bankInfo.style.display = 'block';
+      } else if (this.value === 'Visa') {
+        visaInfo.style.display = 'block';
       }
     });
-    console.log('✅ Payment change listener added');
   }
 
   // Xử lý submit form
@@ -40,17 +46,13 @@ document.addEventListener('DOMContentLoaded', () => {
       
       console.log('Form data:', { name, phone, address, payment });
       
-      // Lấy thông tin thẻ nếu là Chuyển khoản
-      let cardNumber = '';
-      let pin = '';
+      // Validate thông tin thanh toán
+      let paymentData = {};
       
       if (payment === 'Chuyển khoản') {
-        cardNumber = document.getElementById('c_cardNumber').value.trim();
-        pin = document.getElementById('c_pin').value.trim();
+        const cardNumber = document.getElementById('c_cardNumber').value.trim();
+        const pin = document.getElementById('c_pin').value.trim();
         
-        console.log('Card info:', { cardNumber, pin });
-        
-        // Validate thông tin thẻ
         if (!cardNumber || !pin) {
           alert('Vui lòng nhập đầy đủ thông tin thẻ!');
           return;
@@ -65,6 +67,40 @@ document.addEventListener('DOMContentLoaded', () => {
           alert('Mã PIN phải có đúng 6 chữ số!');
           return;
         }
+        
+        paymentData = { cardNumber: '****' + cardNumber.slice(-4) };
+      }
+      else if (payment === 'Visa') {
+        const cardholder = document.getElementById('c_cardholder').value.trim();
+        const visaNumber = document.getElementById('c_visaNumber').value.trim();
+        const expiry = document.getElementById('c_expiry').value.trim();
+        const cvv = document.getElementById('c_cvv').value.trim();
+        
+        if (!cardholder || !visaNumber || !expiry || !cvv) {
+          alert('Vui lòng nhập đầy đủ thông tin thẻ Visa!');
+          return;
+        }
+        
+        if (visaNumber.length !== 16 || !/^\d+$/.test(visaNumber)) {
+          alert('Số thẻ phải có đúng 16 chữ số!');
+          return;
+        }
+        
+        if (!/^\d{2}\/\d{2}$/.test(expiry)) {
+          alert('Ngày hết hạn phải theo định dạng MM/YY!');
+          return;
+        }
+        
+        if (cvv.length !== 3 || !/^\d+$/.test(cvv)) {
+          alert('CVV phải có đúng 3 chữ số!');
+          return;
+        }
+        
+        paymentData = { 
+          cardholder,
+          cardNumber: '****' + visaNumber.slice(-4),
+          expiry 
+        };
       }
       
       // Kiểm tra giỏ hàng
@@ -86,7 +122,7 @@ document.addEventListener('DOMContentLoaded', () => {
         phone,
         address,
         payment,
-        cardInfo: payment === 'Chuyển khoản' ? { cardNumber: '****' + cardNumber.slice(-4) } : null,
+        paymentData,
         items: cart,
         date: new Date().toLocaleString(),
         status: 'Chờ xử lý'
@@ -107,7 +143,8 @@ document.addEventListener('DOMContentLoaded', () => {
           <p style="margin-bottom:10px;"><strong>Người nhận:</strong> ${name}</p>
           <p style="margin-bottom:10px;"><strong>Địa chỉ:</strong> ${address}</p>
           <p style="margin-bottom:10px;"><strong>Phương thức thanh toán:</strong> ${payment}</p>
-          ${payment === 'Chuyển khoản' ? `<p style="margin-bottom:10px;"><strong>Thẻ thanh toán:</strong> ****${cardNumber.slice(-4)}</p>` : ''}
+          ${payment === 'Visa' ? `<p style="margin-bottom:10px;"><strong>Thẻ thanh toán:</strong> ${paymentData.cardNumber}</p>` : ''}
+          ${payment === 'Chuyển khoản' ? `<p style="margin-bottom:10px;"><strong>Thẻ thanh toán:</strong> ${paymentData.cardNumber}</p>` : ''}
           <div style="display:flex; gap:15px; justify-content:center; flex-wrap:wrap;">
             <a href="index.html" class="btn" style="background:#2f6f3e; color:white; padding:10px 20px; border-radius:8px; text-decoration:none;">Về trang chủ</a>
             <a href="history.html" class="btn" style="background:#e9f5ec; color:#2f6f3e; padding:10px 20px; border-radius:8px; text-decoration:none;">Xem đơn hàng</a>
