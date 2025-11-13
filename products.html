@@ -75,20 +75,20 @@
           window.location.href="login.html";
         });
 
-        // 🌸 Dữ liệu sản phẩm mẫu
+        // 🌸 Dữ liệu sản phẩm mẫu (ảnh JPG)
         const defaultProducts = [
-          {id:1,name:'Hoa hồng',category:'Hoa',price:120000,desc:'Hoa hồng đẹp', img:'assets/img/id1.png'},
-          {id:2,name:'Hoa hướng dương',category:'Hoa',price:90000,desc:'Rạng rỡ tỏa nắng', img:'assets/img/id2.png'},
-          {id:3,name:'Cây phát tài',category:'Cây cảnh',price:250000,desc:'Mang lại may mắn', img:'assets/img/id3.png'},
-          {id:4,name:'Hoa tulip',category:'Hoa',price:150000,desc:'Thanh lịch và tinh tế', img:'assets/img/id4.png'},
-          {id:5,name:'Hoa lan',category:'Hoa',price:200000,desc:'Biểu tượng sang trọng', img:'assets/img/id5.png'},
-          {id:6,name:'Hoa cúc',category:'Hoa',price:80000,desc:'Đơn giản mà đáng yêu', img:'assets/img/id6.png'},
-          {id:7,name:'Cây bonsai',category:'Cây cảnh',price:350000,desc:'Nghệ thuật thu nhỏ thiên nhiên', img:'assets/img/id7.png'},
-          {id:8,name:'Cây sen đá',category:'Cây cảnh',price:100000,desc:'Dễ chăm, bền bỉ', img:'assets/img/id8.png'},
-          {id:9,name:'Hoa mẫu đơn',category:'Hoa',price:180000,desc:'Sang trọng và quý phái', img:'assets/img/id9.png'},
-          {id:10,name:'Cây may mắn',category:'Cây cảnh',price:220000,desc:'Mang lại tài lộc', img:'assets/img/id10.png'},
-          {id:11,name:'Hoa ly',category:'Hoa',price:190000,desc:'Tinh khiết và thanh cao', img:'assets/img/id11.png'},
-          {id:12,name:'Hoa cẩm tú cầu',category:'Hoa',price:210000,desc:'Ngọt ngào và nhẹ nhàng', img:'assets/img/id12.png'}
+          {id:1,name:'Hoa hồng',category:'Hoa',price:120000,desc:'Hoa hồng đẹp', img:'assets/img/id1.jpg'},
+          {id:2,name:'Hoa hướng dương',category:'Hoa',price:90000,desc:'Rạng rỡ tỏa nắng', img:'assets/img/id2.jpg'},
+          {id:3,name:'Cây phát tài',category:'Cây cảnh',price:250000,desc:'Mang lại may mắn', img:'assets/img/id3.jpg'},
+          {id:4,name:'Hoa tulip',category:'Hoa',price:150000,desc:'Thanh lịch và tinh tế', img:'assets/img/id4.jpg'},
+          {id:5,name:'Hoa lan',category:'Hoa',price:200000,desc:'Biểu tượng sang trọng', img:'assets/img/id5.jpg'},
+          {id:6,name:'Hoa cúc',category:'Hoa',price:80000,desc:'Đơn giản mà đáng yêu', img:'assets/img/id6.jpg'},
+          {id:7,name:'Cây bonsai',category:'Cây cảnh',price:350000,desc:'Nghệ thuật thu nhỏ thiên nhiên', img:'assets/img/id7.jpg'},
+          {id:8,name:'Cây sen đá',category:'Cây cảnh',price:100000,desc:'Dễ chăm, bền bỉ', img:'assets/img/id8.jpg'},
+          {id:9,name:'Hoa mẫu đơn',category:'Hoa',price:180000,desc:'Sang trọng và quý phái', img:'assets/img/id9.jpg'},
+          {id:10,name:'Cây may mắn',category:'Cây cảnh',price:220000,desc:'Mang lại tài lộc', img:'assets/img/id10.jpg'},
+          {id:11,name:'Hoa ly',category:'Hoa',price:190000,desc:'Tinh khiết và thanh cao', img:'assets/img/id11.jpg'},
+          {id:12,name:'Hoa cẩm tú cầu',category:'Hoa',price:210000,desc:'Ngọt ngào và nhẹ nhàng', img:'assets/img/id12.jpg'}
         ];
 
         if(!localStorage.getItem('products')) 
@@ -106,7 +106,7 @@
         let filteredProducts = JSON.parse(localStorage.getItem('products'));
 
         function getProductImage(p){
-          return p.img || `assets/img/id${p.id}.png`;
+          return p.img || `assets/img/id${p.id}.jpg`;
         }
 
         function updateCartCount(){
@@ -134,7 +134,9 @@
           const items = products.slice(start, end);
           list.innerHTML = items.map(p=>`
             <div class="product-card">
-              <img src="${getProductImage(p)}" alt="${p.name}" onclick="window.location.href='detail.html?id=${p.id}'" onerror="this.src='assets/img/placeholder.png'">
+              <img src="${getProductImage(p)}" alt="${p.name}" 
+                   onclick="window.location.href='detail.html?id=${p.id}'" 
+                   onerror="this.src='assets/img/placeholder.jpg'">
               <h3>${p.name}</h3>
               <p>${p.desc}</p>
               <p class="price">${p.price.toLocaleString()} VNĐ</p>
