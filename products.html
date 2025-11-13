@@ -23,38 +23,148 @@
     </ul>
   </nav>
   <div class="icons">
-  <a href="cart.html" title="Giỏ hàng" class="fa-solid fa-cart-shopping"></a>
-  <a href="profile.html" title="Tài khoản" class="fa-regular fa-user"></a>
-</div>
-
+    <a href="cart.html" class="fa-solid fa-cart-shopping"></a>
+    <a href="login.html" class="fa-regular fa-user"></a>
+  </div>
   <div class="menu-toggle">☰</div>
 </header>
 
 <main class="container">
   <h2>Danh sách sản phẩm</h2>
 
-  <div class="filter-bar">
-    <input id="search" placeholder="Tìm tên..." />
-    <select id="category">
-      <option value="">Tất cả loại</option>
-      <option value="Hoa">Hoa</option>
-      <option value="Cây cảnh">Cây cảnh</option>
-    </select>
-    <select id="priceRange">
-      <option value="">Tất cả giá</option>
-      <option value="0-100000">Dưới 100.000</option>
-      <option value="100000-200000">100.000 - 200.000</option>
-      <option value="200000-500000">200.000 - 500.000</option>
-      <option value="500000-9999999">Trên 500.000</option>
-    </select>
-    <button id="filterBtn">Lọc</button>
-  </div>
+    <div class="filter-bar">
+      <input id="search" placeholder="Tìm theo tên..." />
+      <select id="category">
+        <option value>Tất cả loại</option>
+        <option value="Hoa">Hoa</option>
+        <option value="Cây cảnh">Cây cảnh</option>
+      </select>
+      <select id="priceRange">
+        <option value>Tất cả giá</option>
+        <option value="0-100000">Dưới 100.000</option>
+        <option value="100000-200000">100.000 - 200.000</option>
+        <option value="200000-500000">200.000 - 500.000</option>
+        <option value="500000-9999999">Trên 500.000</option>
+      </select>
+      <button id="filterBtn">Lọc</button>
+    </div>
 
-  <div id="product-list" class="tip-cards" style="margin-top:30px;"></div>
-</main>
+    <div id="product-list"></div>
+    <div id="pagination"></div>
 
-<footer class="footer">
-  <p>© 2025 Flora Shop</p>
-</footer>
-</body>
+    <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const currentUser = JSON.parse(localStorage.getItem('currentUser') || 'null');
+      if(!currentUser){ alert("⚠️ Bạn cần đăng nhập!"); window.location.href="login.html"; return; }
+      document.getElementById('username').textContent = currentUser.username;
+      document.getElementById('logoutBtn').addEventListener('click', () => {
+        localStorage.removeItem('currentUser'); 
+        window.location.href="login.html";
+      });
+
+      const defaultProducts = [
+        {id:1,name:'Hoa hồng',category:'Hoa',price:120000,desc:'Hoa hồng đẹp'},
+        {id:2,name:'Hoa hướng dương',category:'Hoa',price:90000,desc:'Rạng rỡ tỏa nắng'},
+        {id:3,name:'Cây phát tài',category:'Cây cảnh',price:250000,desc:'Mang lại may mắn'},
+        {id:4,name:'Hoa tulip',category:'Hoa',price:150000,desc:'Thanh lịch và tinh tế'},
+        {id:5,name:'Hoa lan',category:'Hoa',price:200000,desc:'Biểu tượng sang trọng'},
+        {id:6,name:'Hoa cúc',category:'Hoa',price:80000,desc:'Đơn giản mà đáng yêu'},
+        {id:7,name:'Cây bonsai',category:'Cây cảnh',price:350000,desc:'Nghệ thuật thu nhỏ thiên nhiên'},
+        {id:8,name:'Cây sen đá',category:'Cây cảnh',price:100000,desc:'Dễ chăm, bền bỉ'},
+        {id:9,name:'Hoa mẫu đơn',category:'Hoa',price:180000,desc:'Sang trọng và quý phái'},
+        {id:10,name:'Cây may mắn',category:'Cây cảnh',price:220000,desc:'Mang lại tài lộc'},
+        {id:11,name:'Hoa ly',category:'Hoa',price:190000,desc:'Tinh khiết và thanh cao'},
+        {id:12,name:'Hoa cẩm tú cầu',category:'Hoa',price:210000,desc:'Ngọt ngào và nhẹ nhàng'}
+      ];
+      if(!localStorage.getItem('products')) localStorage.setItem('products',JSON.stringify(defaultProducts));
+
+      const list=document.getElementById('product-list');
+      const search=document.getElementById('search');
+      const category=document.getElementById('category');
+      const priceRange=document.getElementById('priceRange');
+      const filterBtn=document.getElementById('filterBtn');
+      const paginationContainer=document.getElementById('pagination');
+      const cartCount=document.getElementById('cart-count');
+      const ITEMS_PER_PAGE=6;
+      let currentPage=1;
+      let filteredProducts=JSON.parse(localStorage.getItem('products'));
+
+      function getProductImage(id){ return `assets/img/id${id}.jpg`; }
+
+      function updateCartCount(){
+        const key=`cart_${currentUser.username}`;
+        const cart=JSON.parse(localStorage.getItem(key)||'[]');
+        cartCount.textContent = cart.reduce((s,i)=>s+i.qty,0);
+      }
+
+      function addToCart(id){
+        const key=`cart_${currentUser.username}`;
+        const products=JSON.parse(localStorage.getItem('products'));
+        const prod=products.find(p=>p.id===id);
+        let cart=JSON.parse(localStorage.getItem(key)||'[]');
+        const exist=cart.find(i=>i.id===id);
+        if(exist) exist.qty++;
+        else cart.push({...prod,qty:1});
+        localStorage.setItem(key,JSON.stringify(cart));
+        updateCartCount();
+        alert(`✅ Đã thêm "${prod.name}" vào giỏ hàng!`);
+      }
+
+      function display(products){
+        const start=(currentPage-1)*ITEMS_PER_PAGE;
+        const end=start+ITEMS_PER_PAGE;
+        const items=products.slice(start,end);
+        list.innerHTML=items.map(p=>`
+          <div class="product-card">
+            <img src="${getProductImage(p.id)}" alt="${p.name}" onerror="this.src='assets/img/placeholder.png'">
+            <h3>${p.name}</h3>
+            <p>${p.desc}</p>
+            <p class="price">${p.price.toLocaleString()} VNĐ</p>
+            <button class="add-btn" data-id="${p.id}">🛒 Thêm vào giỏ</button>
+          </div>`).join('');
+        document.querySelectorAll('.add-btn').forEach(btn=>btn.addEventListener('click',()=>addToCart(Number(btn.dataset.id))));
+        renderPagination(products.length);
+      }
+
+      function renderPagination(totalItems){
+        const totalPages=Math.ceil(totalItems/ITEMS_PER_PAGE);
+        let html=`<div class="pagination-info">Trang ${currentPage} / ${totalPages} (${totalItems} sản phẩm)</div>`;
+        html+='<div class="pagination-buttons">';
+        for(let i=1;i<=totalPages;i++){
+          html+=`<button class="page-btn ${i===currentPage?'active':''}" data-page="${i}">${i}</button>`;
+        }
+        html+='</div>';
+        paginationContainer.innerHTML=html;
+        paginationContainer.querySelectorAll('.page-btn').forEach(btn=>btn.addEventListener('click',e=>{
+          currentPage=Number(e.target.dataset.page);
+          display(filteredProducts);
+        }));
+      }
+
+      function filterProducts(){
+        const all=JSON.parse(localStorage.getItem('products'));
+        const kw=(search.value||'').toLowerCase();
+        const cat=category.value;
+        const price=priceRange.value;
+        filteredProducts=all.filter(p=>{
+          const matchName=p.name.toLowerCase().includes(kw);
+          const matchCat=cat?p.category===cat:true;
+          let matchPrice=true;
+          if(price){
+            const [min,max]=price.split('-').map(Number);
+            matchPrice=p.price>=min && p.price<=max;
+          }
+          return matchName && matchCat && matchPrice;
+        });
+        currentPage=1;
+        display(filteredProducts);
+      }
+
+      filterBtn.addEventListener('click',filterProducts);
+      display(filteredProducts);
+      updateCartCount();
+    });
+    </script>
+
+  </body>
 </html>
