@@ -1,12 +1,12 @@
 document.addEventListener('DOMContentLoaded', () => {
-  // 🔒 Kiểm tra người dùng đã đăng nhập chưa
   const currentUser = JSON.parse(localStorage.getItem('currentUser') || 'null');
   if (!currentUser) {
     alert("Vui lòng đăng nhập để xem hoặc thanh toán giỏ hàng!");
     location.href = "login.html";
     return;
   }
-
+  const CART_KEY = `cart_${currentUser.username}`;
+  
   const listDiv = document.getElementById('cart-list');
   const totalDiv = document.getElementById('cart-total');
 
@@ -14,8 +14,7 @@ document.addEventListener('DOMContentLoaded', () => {
     return `assets/img/id${productId}.jpg`;
   }
 
-  function render() {
-    let cart = JSON.parse(localStorage.getItem('cart') || '[]');
+  function render() {    let cart = JSON.parse(localStorage.getItem(CART_KEY) || '[]');
     if (cart.length === 0) { 
       listDiv.innerHTML = '<p>Giỏ hàng trống</p>'; 
       totalDiv.innerHTML = ''; 
@@ -55,17 +54,17 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   function changeQty(i, delta) {
-    let cart = JSON.parse(localStorage.getItem('cart') || '[]');
+    let cart = JSON.parse(localStorage.getItem(CART_KEY) || '[]');
     cart[i].qty += delta;
     if (cart[i].qty <= 0) cart.splice(i, 1);
-    localStorage.setItem('cart', JSON.stringify(cart));
+    localStorage.setItem(CART_KEY, JSON.stringify(cart));
     render();
   }
 
   function removeItem(i) {
-    let cart = JSON.parse(localStorage.getItem('cart') || '[]');
+    let cart = JSON.parse(localStorage.getItem(CART_KEY) || '[]');
     cart.splice(i, 1);
-    localStorage.setItem('cart', JSON.stringify(cart));
+    localStorage.setItem(CART_KEY, JSON.stringify(cart));
     render();
   }
 
