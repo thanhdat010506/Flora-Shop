@@ -10,7 +10,6 @@
 <body>
 
 <aside class="sidebar">
-
   <h2><a href="../index.html" class="home-link">🌿 Flora Admin</a></h2>
   <ul>
     <li><a href="dashboard.html">Tổng quan</a></li>
@@ -18,24 +17,22 @@
     <li><a href="manage_users.html">Người dùng</a></li>
     <li><a href="manage_orders.html" class="active">Đơn hàng</a></li>
     <li><a href="#" onclick="logout()">Đăng xuất</a></li>
-    
   </ul>
 </aside>
-
 
 <main class="main">
   <h1>Quản lý đơn hàng</h1>
 
   <div class="revenue-summary">
-  <div class="revenue-card">
-    <div class="icon">💰</div>
-    <div class="info">
-      <h3>Tổng doanh thu</h3>
-      <p id="revenueValue">0đ</p>
-      <span id="orderCount">(0 đơn hàng)</span>
+    <div class="revenue-card">
+      <div class="icon">💰</div>
+      <div class="info">
+        <h3>Tổng doanh thu</h3>
+        <p id="revenueValue">0đ</p>
+        <span id="orderCount">(0 đơn hàng)</span>
+      </div>
     </div>
   </div>
-</div>
 
   <table id="orderTable">
     <thead>
@@ -52,7 +49,6 @@
   </table>
 </main>
 
-<!-- ✅ đúng đường dẫn JS -->
 <script src="assets/js/admin.js"></script>
 
 <script>
@@ -63,30 +59,25 @@ const tbody = document.querySelector("#orderTable tbody");
 
 function render() {
   orders = Admin.getOrders();
-  const revenueEl = document.getElementById("revenueText");
 
   if (!orders.length) {
     tbody.innerHTML = '<tr><td colspan="6">Chưa có đơn hàng</td></tr>';
-    if (revenueEl) revenueEl.textContent = "Tổng doanh thu: 0đ";
+    document.getElementById("revenueValue").textContent = "0đ";
+    document.getElementById("orderCount").textContent = "(0 đơn hàng)";
     return;
   }
 
-  // Tính doanh thu
   let totalRevenue = 0;
   orders.forEach(o => {
     const total = o.items.reduce((s, it) => s + it.price * it.qty, 0);
     totalRevenue += total;
   });
 
-  // Cập nhật doanh thu
-  if (revenueEl)
-    revenueEl.textContent = `Tổng doanh thu: ${totalRevenue.toLocaleString()}đ (${orders.length} đơn hàng)`;
+  document.getElementById("revenueValue").textContent =
+    totalRevenue.toLocaleString() + "đ";
 
-  // Hiển thị danh sách đơn
-  if (!orders.length) {
-    tbody.innerHTML = '<tr><td colspan="6">Chưa có đơn hàng</td></tr>';
-    return;
-  }
+  document.getElementById("orderCount").textContent =
+    "(" + orders.length + " đơn hàng)";
 
   tbody.innerHTML = orders.map((o, i) => {
     const total = o.items.reduce((s, it) => s + it.price * it.qty, 0);
@@ -99,17 +90,22 @@ function render() {
         <td>${o.status}</td>
         <td>
           <button class="btn-edit" onclick="viewDetail(${i})">Xem</button>
-          <button class="btn-del" onclick="changeStatus(${i})">Sửa</button>
+          <button class="btn-edit" onclick="changeStatus(${i})">Sửa</button>
+          <button class="btn-del" onclick="deleteOrder(${i})">Xóa</button>
         </td>
-      </tr>`;
+      </tr>
+    `;
   }).join("");
 }
 
 function viewDetail(i) {
   const o = orders[i];
-  alert(
-    `Đơn #${o.id}\nKhách: ${o.name}\nNgày: ${o.date}\nĐịa chỉ: ${o.address}\nThanh toán: ${o.payment}\nTrạng thái: ${o.status}`
-  );
+  alert(`Đơn #${o.id}
+Khách: ${o.name}
+Ngày: ${o.date}
+Địa chỉ: ${o.address}
+Thanh toán: ${o.payment}
+Trạng thái: ${o.status}`);
 }
 
 function changeStatus(i) {
@@ -120,8 +116,18 @@ function changeStatus(i) {
   render();
 }
 
+function deleteOrder(i) {
+  const o = orders[i];
+  if (!confirm(`Bạn có chắc muốn XÓA đơn hàng #${o.id} không?`)) return;
+
+  orders.splice(i, 1);
+  Admin.setOrders(orders);
+  render();
+}
+
 render();
 </script>
+
 
 <script>
 function logout() {

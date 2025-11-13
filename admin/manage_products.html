@@ -12,7 +12,6 @@
 <body>
 
 <aside class="sidebar">
-
   <h2><a href="../index.html" class="home-link">🌿 Flora Admin</a></h2>
 
   <ul>
@@ -45,7 +44,6 @@
   </div>
 </main>
 
-<!-- Modal -->
 <div id="productModal" class="modal">
   <div class="modal-content">
     <h2 id="modalTitle">Thêm sản phẩm</h2>
@@ -58,6 +56,9 @@
 
     <label>Link ảnh</label>
     <input type="text" id="pimage">
+
+    <label>Hoặc upload ảnh</label>
+    <input type="file" id="pimageFile" accept="image/*">
 
     <label>Mô tả</label>
     <textarea id="pdesc" rows="3"></textarea>
@@ -75,7 +76,6 @@ function logout() {
   location.href = "admin_login.html";
 }
 </script>
-
 
 </body>
 </html>

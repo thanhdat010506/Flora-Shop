@@ -1,4 +1,3 @@
-/* ================== 🌿 Flora Admin Helper ================== */
 (function () {
   function requireAdmin() {
     if (!localStorage.getItem("isAdmin")) {
@@ -28,59 +27,9 @@
   window.Admin = { requireAdmin, getUsers, setUsers, getProducts, setProducts, getOrders, setOrders };
 })();
 
-function renderProducts() {
-  tbody.innerHTML = products
-    .map(
-      (p, i) => `
-    <tr>
-      <td>${p.name}</td>
-      <td>${p.price.toLocaleString()}đ</td>
-      <td><img src="${p.image || ''}" alt="" width="60"></td>
-      <td>${p.desc || ''}</td>
-      <td>
-        <button onclick="editProduct(${i})">✏️</button>
-        <button onclick="deleteProduct(${i})">🗑️</button>
-      </td>
-    </tr>`
-    )
-    .join("");
-  localStorage.setItem("products", JSON.stringify(products));
+if (!Admin.requireAdmin()) {
+  throw new Error("Not admin");
 }
-
-document
-  .getElementById("addProductForm")
-  ?.addEventListener("submit", (e) => {
-    e.preventDefault();
-    const name = pname.value.trim();
-    const price = parseInt(pprice.value);
-    const image = pimage.value.trim();
-    const desc = pdesc.value.trim();
-    if (!name || isNaN(price)) return alert("Điền đủ thông tin!");
-    products.push({ name, price, image, desc });
-    renderProducts();
-    e.target.reset();
-  });
-
-function editProduct(i) {
-  const p = products[i];
-  const name = prompt("Tên mới:", p.name);
-  const price = parseInt(prompt("Giá mới:", p.price));
-  const image = prompt("Link ảnh mới:", p.image);
-  const desc = prompt("Mô tả mới:", p.desc);
-  if (name && !isNaN(price)) {
-    products[i] = { name, price, image, desc };
-    renderProducts();
-  }
-}
-
-function deleteProduct(i) {
-  if (confirm("Xóa sản phẩm này?")) {
-    products.splice(i, 1);
-    renderProducts();
-  }
-}
-
-renderProducts();
 
 if (!localStorage.getItem("users")) {
   const demoUsers = [
@@ -94,13 +43,17 @@ if (!localStorage.getItem("users")) {
 if (!localStorage.getItem("products")) {
   const demoProducts = [
     {
+      id: 1,
       name: "Hoa Hồng Đỏ",
+      category: "Hoa",
       price: 180000,
       image: "https://th.bing.com/th/id/OIP.KgUlM9X5f_062u7a_6bAxQHaFk?w=245&h=183&c=7&r=0&o=7&dpr=2&pid=1.7",
       desc: "Biểu tượng của tình yêu và sự ngọt ngào.",
     },
     {
+      id: 2,
       name: "Hoa Hướng Dương",
+      category: "Hoa",
       price: 220000,
       image: "https://th.bing.com/th/id/OIP.lUsydUZW4GscBrT3Cxi6HAHaE8?w=247&h=180&c=7&r=0&o=7&dpr=2&pid=1.7",
       desc: "Hoa của niềm tin và hy vọng, hướng về ánh sáng.",
@@ -113,7 +66,12 @@ if (!localStorage.getItem("history")) {
   localStorage.setItem("history", JSON.stringify([]));
 }
 
-/* ================== 🌿 Quản lý người dùng ================== */
+document.addEventListener("DOMContentLoaded", () => {
+  renderUsers();
+  renderProducts();
+  updateDashboardStats();
+});
+
 let users = Admin.getUsers();
 const userTable = document.querySelector("#ulist tbody");
 
@@ -123,6 +81,7 @@ function renderUsers() {
     userTable.innerHTML = `<tr><td colspan="4">Chưa có người dùng nào</td></tr>`;
     return;
   }
+
   userTable.innerHTML = users
     .map(
       (u, i) => `
@@ -137,6 +96,7 @@ function renderUsers() {
     </tr>`
     )
     .join("");
+
   Admin.setUsers(users);
 }
 
@@ -147,11 +107,13 @@ const cancelUserBtn = document.getElementById("cancelUserBtn");
 let editIndex = -1;
 
 function openModal(edit = false, i = null) {
+  if (!modal) return;
   modal.style.display = "flex";
+
   if (edit) {
     editIndex = i;
-    document.getElementById("modalTitle").textContent = "Sửa người dùng";
     const u = users[i];
+    document.getElementById("modalTitle").textContent = "Sửa người dùng";
     document.getElementById("userName").value = u.name;
     document.getElementById("userEmail").value = u.email;
     document.getElementById("userRole").value = u.role;
@@ -165,7 +127,7 @@ function openModal(edit = false, i = null) {
 }
 
 function closeModal() {
-  modal.style.display = "none";
+  if (modal) modal.style.display = "none";
 }
 
 addUserBtn?.addEventListener("click", () => openModal(false));
@@ -175,9 +137,10 @@ saveUserBtn?.addEventListener("click", () => {
   const name = document.getElementById("userName").value.trim();
   const email = document.getElementById("userEmail").value.trim();
   const role = document.getElementById("userRole").value;
+
   if (!name || !email) return alert("Vui lòng nhập đủ thông tin!");
 
-  if (editIndex >= 0) users[editIndex] = { name, email, role };
+  if (editIndex >= 0) users[editIndex] = { ...users[editIndex], name, email, role };
   else users.push({ name, email, role });
 
   Admin.setUsers(users);
@@ -193,14 +156,15 @@ function deleteUser(i) {
   }
 }
 
-renderUsers();
+window.openModal = openModal;
+window.deleteUser = deleteUser;
 
-/* ================== 🌿 Quản lý sản phẩm ================== */
 let products = Admin.getProducts();
 const productTable = document.querySelector("#plist tbody");
 
 function renderProducts() {
   if (!productTable) return;
+
   if (products.length === 0) {
     productTable.innerHTML = `<tr><td colspan="5">Chưa có sản phẩm nào</td></tr>`;
     return;
@@ -209,23 +173,22 @@ function renderProducts() {
   productTable.innerHTML = products
     .map(
       (p, i) => `
-    <tr>
-      <td>${p.name}</td>
-      <td>${p.price.toLocaleString()}₫</td>
-      <td><img src="${p.image}" alt="" width="60"></td>
-      <td>${p.desc || ""}</td>
-      <td>
-        <button class="btn-edit" onclick="openProductModal(true, ${i})">✏️</button>
-        <button class="btn-del" onclick="deleteProduct(${i})">🗑️</button>
-      </td>
-    </tr>`
+      <tr>
+        <td>${p.name}</td>
+        <td>${p.price.toLocaleString()}₫</td>
+        <td><img src="${p.image}" width="60"></td>
+        <td>${p.desc || ""}</td>
+        <td>
+          <button class="btn-edit" onclick="openProductModal(true, ${i})">✏️</button>
+          <button class="btn-del" onclick="deleteProduct(${i})">🗑️</button>
+        </td>
+      </tr>`
     )
     .join("");
 
   Admin.setProducts(products);
 }
 
-// Modal thêm/sửa sản phẩm
 const pmodal = document.getElementById("productModal");
 const addProductBtn = document.getElementById("addProductBtn");
 const saveProductBtn = document.getElementById("saveProductBtn");
@@ -233,15 +196,20 @@ const cancelProductBtn = document.getElementById("cancelProductBtn");
 let editProductIndex = -1;
 
 function openProductModal(edit = false, i = null) {
+  if (!pmodal) return;
   pmodal.style.display = "flex";
+
+  const fileInput = document.getElementById("pimageFile");
+  if (fileInput) fileInput.value = "";
+
   if (edit) {
     editProductIndex = i;
-    document.getElementById("modalTitle").textContent = "Sửa sản phẩm";
     const p = products[i];
+    document.getElementById("modalTitle").textContent = "Sửa sản phẩm";
     document.getElementById("pname").value = p.name;
     document.getElementById("pprice").value = p.price;
-    document.getElementById("pimage").value = p.image;
-    document.getElementById("pdesc").value = p.desc;
+    document.getElementById("pimage").value = p.image || "";
+    document.getElementById("pdesc").value = p.desc || "";
   } else {
     editProductIndex = -1;
     document.getElementById("modalTitle").textContent = "Thêm sản phẩm";
@@ -253,7 +221,7 @@ function openProductModal(edit = false, i = null) {
 }
 
 function closeProductModal() {
-  pmodal.style.display = "none";
+  if (pmodal) pmodal.style.display = "none";
 }
 
 addProductBtn?.addEventListener("click", () => openProductModal(false));
@@ -262,18 +230,55 @@ cancelProductBtn?.addEventListener("click", closeProductModal);
 saveProductBtn?.addEventListener("click", () => {
   const name = document.getElementById("pname").value.trim();
   const price = parseInt(document.getElementById("pprice").value.trim());
-  const image = document.getElementById("pimage").value.trim();
+  const linkImage = document.getElementById("pimage").value.trim();
+  const fileInput = document.getElementById("pimageFile");
   const desc = document.getElementById("pdesc").value.trim();
-  if (!name || !price || !image) return alert("Vui lòng nhập đầy đủ thông tin!");
 
-  const product = { name, price, image, desc };
+  if (!name || !price) return alert("Vui lòng nhập tên và giá!");
+
+  let finalImage = linkImage;
+
+  if (fileInput && fileInput.files.length > 0) {
+    const reader = new FileReader();
+    reader.onload = e => {
+      finalImage = e.target.result;
+      saveProduct(name, price, finalImage, desc);
+    };
+    reader.readAsDataURL(fileInput.files[0]);
+  } else {
+    saveProduct(name, price, finalImage, desc);
+  }
+});
+
+function saveProduct(name, price, image, desc) {
+  let product;
+
+  if (editProductIndex >= 0) {
+    const old = products[editProductIndex];
+    product = { ...old, name, price, image, desc };
+  } else {
+    const ids = products
+      .map(p => parseInt(p.id))
+      .filter(n => !isNaN(n));
+    const maxId = ids.length ? Math.max(...ids) : 0;
+
+    product = {
+      id: maxId + 1,
+      name,
+      price,
+      image,
+      desc,
+      category: "Hoa",
+    };
+  }
+
   if (editProductIndex >= 0) products[editProductIndex] = product;
   else products.push(product);
 
   Admin.setProducts(products);
   renderProducts();
   closeProductModal();
-});
+}
 
 function deleteProduct(i) {
   if (confirm("Bạn có chắc muốn xóa sản phẩm này không?")) {
@@ -283,9 +288,65 @@ function deleteProduct(i) {
   }
 }
 
-renderProducts();
+window.openProductModal = openProductModal;
+window.deleteProduct = deleteProduct;
 
-/* ================== 🌿 Logout ================== */
+window.applyFilter = function applyFilter() {
+  const addr = document.getElementById("filterAddress")?.value.toLowerCase() || "";
+  const date = document.getElementById("filterDate")?.value || "";
+
+  let orders = Admin.getOrders();
+
+  if (addr) orders = orders.filter(o => (o.address || "").toLowerCase().includes(addr));
+  if (date) orders = orders.filter(o => (o.date || "").startsWith(date));
+
+  const tbody = document.querySelector("#orderTable tbody");
+  if (!tbody) return;
+
+  if (!orders.length) {
+    tbody.innerHTML = `<tr><td colspan="6">Không tìm thấy đơn phù hợp</td></tr>`;
+    return;
+  }
+
+  tbody.innerHTML = orders
+    .map(o => {
+      const sum = (o.items || []).reduce(
+        (s, it) => s + (it.price || 0) * (it.qty || 0),
+        0
+      );
+      return `
+      <tr>
+        <td>${o.id}</td>
+        <td>${o.name}</td>
+        <td>${o.date}</td>
+        <td>${sum.toLocaleString()}đ</td>
+        <td>${o.status}</td>
+        <td><button onclick="alert('Đơn #${o.id}\\nKhách: ${o.name}\\nĐịa chỉ: ${o.address}\\nTrạng thái: ${o.status}')">Xem</button></td>
+      </tr>`;
+    })
+    .join("");
+};
+
+function updateDashboardStats() {
+  const revEl = document.getElementById("tRevenue");
+  const ordersEl = document.getElementById("tOrders");
+  if (!revEl && !ordersEl) return;
+
+  const orders = Admin.getOrders();
+
+  let totalRevenue = 0;
+  orders.forEach(o => {
+    const orderTotal = (o.items || []).reduce(
+      (sum, it) => sum + (it.price || 0) * (it.qty || 0),
+      0
+    );
+    totalRevenue += orderTotal;
+  });
+
+  if (revEl) revEl.textContent = totalRevenue.toLocaleString() + "đ";
+  if (ordersEl) ordersEl.textContent = orders.length + " đơn";
+}
+
 function logout() {
   localStorage.removeItem("isAdmin");
   localStorage.removeItem("currentUser");
