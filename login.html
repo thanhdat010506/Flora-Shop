@@ -21,81 +21,22 @@
     </div>
   </form>
 </main>
+
 <script>
-  
-document.addEventListener('DOMContentLoaded', () => {
-  if (!localStorage.getItem('users_seed_v7')) {
-    const users = [
-      { id: 'u_admin', username: 'admin123', password: '123456', role: 'admin', fullName: 'Quản trị viên' },
-      { id: 'u_user', username: 'user123', password: '123456', role: 'user', fullName: 'Khách hàng Demo' }
-    ];
-    localStorage.setItem('users', JSON.stringify(users));
-    localStorage.setItem('users_seed_v7', 'ok');
-  }
-
-  const form = document.getElementById('loginForm');
-  form.addEventListener('submit', (e) => {
+document.getElementById("loginForm")?.addEventListener("submit", (e) => {
     e.preventDefault();
+    const email = document.getElementById("loginEmail").value.trim(); // đúng id input
+    const password = document.getElementById("loginPassword").value.trim();
 
-    const username = document.getElementById('username').value.trim();
-    const password = document.getElementById('password').value.trim();
+    const allUsers = JSON.parse(localStorage.getItem("allUsers")) || [];
+    const user = allUsers.find(u => u.email === email);
 
-    if (!username || !password) {
-      alert('Vui lòng nhập đầy đủ tên đăng nhập và mật khẩu!');
-      return;
-    }
+    if (!user || user.password !== password) return alert("Sai email hoặc mật khẩu!");
 
-    const users = JSON.parse(localStorage.getItem('users') || '[]');
-    const found = users.find(u => u.username === username && u.password === password);
-
-    if (!found) {
-      alert('Sai tên đăng nhập hoặc mật khẩu!');
-      return;
-    }
-
-    localStorage.setItem('currentUser', JSON.stringify(found));
-
-    if (found.role === 'admin') {
-      localStorage.setItem('isAdmin', 'true');
-      location.href = 'admin/dashboard.html';
-    } else {
-      localStorage.removeItem('isAdmin');
-      location.href = 'index.html';
-    }
-  });
-});
-document.addEventListener('DOMContentLoaded', () => {
-  const form = document.getElementById('loginForm');
-
-  form.addEventListener('submit', e => {
-    e.preventDefault();
-    const username = document.getElementById('username').value.trim();
-    const password = document.getElementById('password').value.trim();
-
-    // Lấy danh sách users
-    const users = JSON.parse(localStorage.getItem('users') || '[]');
-    const found = users.find(u => u.username === username && u.password === password);
-
-    if (!found) {
-      alert('Sai tên đăng nhập hoặc mật khẩu!');
-      return;
-    }
-
-    // ✅ Lưu thông tin người dùng đang đăng nhập
-    localStorage.setItem('currentUser', JSON.stringify(found));
-
-    // Nếu là admin → qua dashboard
-    if (found.role === 'admin') {
-      localStorage.setItem('isAdmin', 'true');
-      location.href = 'admin/dashboard.html';
-    } else {
-      localStorage.removeItem('isAdmin');
-      alert('Đăng nhập thành công!');
-      location.href = 'index.html';
-    }
-  });
-});
-
+    sessionStorage.setItem("loggedInUser", email);
+    alert("Đăng nhập thành công!");
+    window.location.href = "shop.html";
+}); 
 </script>
 </body>
 </html>

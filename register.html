@@ -11,22 +11,18 @@
 <header class="header"><div class="logo">🌿 Flora Shop</div></header>
 
 <main class="container">
-  <form id="registerForm">
-  <h2>Đăng ký tài khoản</h2>
-  <input type="text" id="fullname" placeholder="Họ và tên" required>
-  <input type="email" id="email" placeholder="Email" required>
-  <input type="password" id="password" placeholder="Mật khẩu" required>
-  <input type="text" id="address" placeholder="Địa chỉ">
-  <input type="text" id="phone" placeholder="Số điện thoại">
-  <select id="gender">
-    <option value="">Giới tính</option>
-    <option value="Nam">Nam</option>
-    <option value="Nữ">Nữ</option>
-    <option value="Khác">Khác</option>
-  </select>
-  <button type="submit">Đăng ký</button>
-</form>
-
+  <form id="regForm">
+    <h2>Đăng ký</h2>
+    <input id="rname" placeholder="Họ tên" />
+    <input id="ruser" placeholder="Tên đăng nhập" required />
+    <input type="text" id="regAddress" placeholder="Nhập địa chỉ" required>
+    <input type="text" id="regEmail" placeholder="Nhập email" required>
+    <input id="rpass" type="password" placeholder="Mật khẩu" required />
+    <button class="btn" type="submit">Tạo tài khoản</button>
+    <p class="center">
+      Đã có tài khoản? <a href="login.html" class="btn ghost">Đăng nhập</a>
+    </p>
+  </form>
 </main>
 </body>
 </html>

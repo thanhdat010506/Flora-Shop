@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tài khoản của tôi - Flora Shop</title>
+  <link rel="stylesheet" href="assets/css/styles.css">
+  <script defer src="js/account.js"></script>
+</head>
+<body>
+  <header class="header">
+    <div class="logo">🌿 Flora Shop</div>
+    <nav class="nav">
+      <ul>
+        <li><a href="index.html">Trang chủ</a></li>
+        <li><a href="products.html">Sản phẩm</a></li>
+        <li><a href="about.html">Giới thiệu</a></li>
+        <li><a href="contact.html">Liên hệ</a></li>
+      </ul>
+    </nav>
+    <div class="icons">
+      <a href="cart.html" title="Giỏ hàng" class="fa-solid fa-cart-shopping"></a>
+      <a href="account.html" title="Tài khoản" class="fa-regular fa-user"></a>
+    </div>
+    <div class="menu-toggle">☰</div>
+  </header>
+
+  <!-- Nội dung chính -->
+  <main class="account-container">
+    <section class="account-info">
+      <h2>👤 Thông tin tài khoản</h2>
+      <p><strong>Tên người dùng:</strong> <span id="username"></span></p>
+      <p><strong>Email:</strong> <span id="regEmail"></span></p>
+      <p><strong>Ngày đăng ký:</strong> <span id="registerDate"></span></p>
+      <button id="logoutBtn">Đăng xuất</button>
+    </section>
+
+    <section class="history">
+      <h2>🛒 Lịch sử giao dịch</h2>
+      <table class="history-table">
+        <thead>
+          <tr>
+            <th>Mã đơn</th>
+            <th>Ngày mua</th>
+            <th>Tổng tiền</th>
+            <th>Trạng thái</th>
+          </tr>
+        </thead>
+        <tbody id="historyBody">
+          <!-- Dữ liệu sẽ được JS chèn vào -->
+        </tbody>
+      </table>
+    </section>
+  </main>
+
+</body>
+</html>

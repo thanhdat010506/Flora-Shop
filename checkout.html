@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="vi">
 <head>
@@ -26,27 +27,10 @@
     <input id="c_name" placeholder="Họ tên" required />
     <input id="c_phone" placeholder="Số điện thoại" />
     <input id="c_address" placeholder="Địa chỉ giao hàng" required />
-    
     <select id="c_payment">
-      <option value="Tiền mặt">Tiền mặt</option>
-      <option value="Chuyển khoản">Chuyển khoản</option>
-      <option value="Visa">Visa/Mastercard</option>
+      <option>Tiền mặt</option>
+      <option>Chuyển khoản</option>
     </select>
-    
-    <div id="bankInfo" style="display: none;">
-      <input id="c_cardNumber" placeholder="Mã thẻ (16 số)" type="text" maxlength="16" />
-      <input id="c_pin" placeholder="Mã PIN (6 số)" type="password" maxlength="6" />
-    </div>
-    
-    <div id="visaInfo" style="display: none;">
-      <input id="c_cardholder" placeholder="Tên chủ thẻ" type="text" required />
-      <input id="c_visaNumber" placeholder="Số thẻ (16 số)" type="text" maxlength="16" required />
-      <div style="display:flex; gap:10px;">
-        <input id="c_expiry" placeholder="MM/YY" type="text" maxlength="5" required style="flex:1;" />
-        <input id="c_cvv" placeholder="CVV" type="password" maxlength="3" required style="flex:1;" />
-      </div>
-    </div>
-    
     <button class="btn" type="submit">Xác nhận thanh toán</button>
   </form>
 </main>
