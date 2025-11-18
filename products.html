@@ -6,6 +6,7 @@
     <title>Sản phẩm - Flora Shop</title>
     <link rel="stylesheet" href="assets/css/styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <script defer src="js/products.js"></script>
     <style>
      /* ======================= */
 /*  🌿 FLORA SHOP PRODUCT  */
@@ -210,7 +211,7 @@ body {
     <script>
       document.addEventListener('DOMContentLoaded', () => {
         const currentUser = JSON.parse(localStorage.getItem('currentUser') || 'null');
-        if(!currentUser){ alert("⚠️ Bạn cần đăng nhập!"); window.location.href="login.html"; return; }
+        
         document.getElementById('username').textContent = currentUser.username;
         document.getElementById('logoutBtn').addEventListener('click', () => {
           localStorage.removeItem('currentUser'); 
