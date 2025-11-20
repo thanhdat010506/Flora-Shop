@@ -1,57 +1,127 @@
 <!DOCTYPE html>
 <html lang="vi">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Tài khoản của tôi - Flora Shop</title>
-  <link rel="stylesheet" href="assets/css/styles.css">
-  <script defer src="js/account.js"></script>
-</head>
-<body>
-  <header class="header">
-    <div class="logo">🌿 Flora Shop</div>
-    <nav class="nav">
-      <ul>
-        <li><a href="index.html">Trang chủ</a></li>
-        <li><a href="products.html">Sản phẩm</a></li>
-        <li><a href="about.html">Giới thiệu</a></li>
-        <li><a href="contact.html">Liên hệ</a></li>
-      </ul>
-    </nav>
-    <div class="icons">
-      <a href="cart.html" title="Giỏ hàng" class="fa-solid fa-cart-shopping"></a>
-      <a href="account.html" title="Tài khoản" class="fa-regular fa-user"></a>
-    </div>
-    <div class="menu-toggle">☰</div>
-  </header>
 
-  <!-- Nội dung chính -->
-  <main class="account-container">
-    <section class="account-info">
-      <h2>👤 Thông tin tài khoản</h2>
-      <p><strong>Tên người dùng:</strong> <span id="username"></span></p>
-      <p><strong>Email:</strong> <span id="regEmail"></span></p>
-      <p><strong>Ngày đăng ký:</strong> <span id="registerDate"></span></p>
-      <button id="logoutBtn">Đăng xuất</button>
-    </section>
+  <head>
 
-    <section class="history">
-      <h2>🛒 Lịch sử giao dịch</h2>
-      <table class="history-table">
-        <thead>
-          <tr>
-            <th>Mã đơn</th>
-            <th>Ngày mua</th>
-            <th>Tổng tiền</th>
-            <th>Trạng thái</th>
-          </tr>
-        </thead>
-        <tbody id="historyBody">
-          <!-- Dữ liệu sẽ được JS chèn vào -->
-        </tbody>
-      </table>
-    </section>
-  </main>
+    <meta charset="UTF-8">
 
-</body>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tài khoản của tôi - Flora Shop</title>
+
+     <link rel="stylesheet" href="assets/css/styles.css"> 
+
+    <script defer src="js/account.js"></script>
+    <style>
+    /* CSS Tối ưu cho filter */
+    .filter-buttons {
+      margin-bottom: 15px;
+      text-align: center;
+    }
+
+    .filter-buttons button {
+      padding: 8px 12px;
+      margin: 0 4px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      cursor: pointer;
+      background-color: #f0f0f0;
+      transition: background-color 0.2s;
+      font-weight: 600;
+    }
+
+    .filter-buttons button:hover:not(.active) {
+      background-color: #e0e0e0;
+    }
+
+    .filter-buttons button.active {
+      background-color: #2f6f3e;
+      color: white;
+      border-color: #2f6f3e;
+    }
+
+    /* Đảm bảo table display đẹp */
+    .history-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+    }
+
+    .history-table th,
+    .history-table td {
+      border: 1px solid #ddd;
+      padding: 8px;
+      text-align: left;
+      font-size: 14px;
+    }
+
+    .history-table th {
+      background-color: #e9f5ec;
+      color: #2f6f3e;
+      font-weight: 700;
+    }
+  </style>
+  </head>
+
+  <body>
+    <header class="header">
+      <div class="logo">🌿 Flora Shop</div>
+      <nav class="nav">
+        <ul>
+          <li><a href="index.html">Trang chủ</a></li>
+          <li><a href="products.html">Sản phẩm</a></li>
+          <li><a href="about.html">Giới thiệu</a></li>
+          <li><a href="contact.html">Liên hệ</a></li>
+        </ul>
+      </nav>
+      <div class="icons">
+        <a href="cart.html" title="Giỏ hàng"
+          class="fa-solid fa-cart-shopping"></a>
+        <a href="account.html" title="Tài khoản" class="fa-regular fa-user"></a>
+      </div>
+      <div class="menu-toggle">☰</div>
+    </header>
+
+    <main class="account-container">
+      <section class="account-info">
+        <h2>👤 Thông tin tài khoản</h2>
+        <p><strong>Tên người dùng:</strong> <span id="username"></span></p>
+
+        <p><strong>Họ và Tên:</strong> <span id="regName"></span></p>
+
+        <p><strong>Email:</strong> <span id="regEmail"></span></p>
+
+        <p><strong>Địa chỉ:</strong> <span id="regAddress"></span></p>
+
+        <p><strong>Ngày đăng ký:</strong> <span id="registerDate"></span></p>
+        <button id="logoutBtn">Đăng xuất</button>
+      </section>
+
+      <section class="history">
+        <h2>🛒 Lịch sử giao dịch</h2>
+
+        <div id="history-filter" class="filter-buttons">
+          <button data-status="Tất cả" class="active">Tất cả</button>
+          <button data-status="Chờ xác nhận">Chờ xác nhận</button>
+          <button data-status="Đã xác nhận">Đã xác nhận</button>
+          <button data-status="Đã giao">Đã giao</button>
+        </div>
+        <table class="history-table">
+          <thead>
+            <tr>
+              <th>Mã đơn</th>
+              <th>Ngày mua</th>
+              <th>Chi tiết SP</th>
+              <th>Thanh toán</th>
+              <th>Tổng tiền</th>
+              <th>Trạng thái</th>
+            </tr>
+          </thead>
+          <tbody id="historyBody">
+          </tbody>
+        </table>
+      </section>
+    </main>
+
+  </body>
+
 </html>
