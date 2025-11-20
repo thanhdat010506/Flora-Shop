@@ -7,12 +7,96 @@
     <title>Flora Admin - Quản lý Sản phẩm</title>
     <link rel="stylesheet" href="assets/css/admin.css">
     <script defer src="assets/js/admin.js"></script>
+    <style>/* 1. CSS CHO ẢNH SẢN PHẨM */
 
+.product-img {
+
+  width: 60px;
+
+  height: 60px;
+
+  object-fit: cover;
+
+  border-radius: 8px;
+
+  border: 1px solid #ddd;
+
+}/* 2. CĂN CHỈNH BỐ CỤC CỘT BẢNG (ĐÃ TỐI ƯU ID VÀ ẢNH) */
+
+#plist thead th:nth-child(1) {
+
+  width: 3% !important; /* ID: 3% */
+
+}
+
+
+
+#plist thead th:nth-child(2) {
+
+  width: 7% !important; /* Ảnh: 7% */
+
+}
+
+
+
+#plist thead th:nth-child(3) {
+
+  width: 19% !important; /* Tên SP: 19% */
+
+}
+
+
+
+#plist thead th:nth-child(4) {
+
+  width: 10% !important; /* Giá: 10% */
+
+}
+
+
+
+#plist thead th:nth-child(5) {
+
+  width: 7% !important; /* Tồn kho: 7% */
+
+}
+
+
+
+#plist thead th:nth-child(6) {
+
+  width: 40% !important; /* Mô tả: 40% */
+
+}
+
+
+
+#plist thead th:nth-child(7) {
+
+  width: 14% !important; /* Hành động: 14% */
+
+}
+
+
+
+/* 2.1. Tối ưu cột Hành động để nút nằm trên 1 hàng */
+
+#plist tbody td:last-child {
+
+  display: flex;
+
+  justify-content: center;
+
+  align-items: center;
+
+  gap: 5px;
+
+}</style>
   </head>
 
   <body>
     <aside class="sidebar">
-      <h2><a href="../index.html" class="home-link">🌿Flora Admin</a></h2>
+      <h2><a href="../index.html" class="home-link">Flora Admin</a></h2>
       <ul>
         <li><a href="dashboard.html">Tổng quan</a></li>
         <li><a href="manage_products.html" class="active">Sản phẩm</a></li>
