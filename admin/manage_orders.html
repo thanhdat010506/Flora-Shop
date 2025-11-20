@@ -1,148 +1,213 @@
 <!DOCTYPE html>
 <html lang="vi">
+
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>Flora Admin - Đơn hàng</title>
-  <link rel="stylesheet" href="assets/css/admin.css">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Flora Admin - Đơn hàng</title>
+  <link rel="stylesheet" href="assets/css/admin.css">
+  <style>
+    /* Bổ sung CSS để định dạng khu vực lọc cho đẹp hơn */
+    .order-filter-controls {
+      display: flex;
+      flex-wrap: wrap;
+      /* Cho phép xuống dòng nếu màn hình nhỏ */
+      gap: 15px;
+      /* Khoảng cách giữa các thành phần */
+      align-items: center;
+      padding: 15px;
+      background-color: #f8f9fa;
+      /* Màu nền nhẹ cho khu vực lọc */
+      border-radius: 8px;
+      margin-bottom: 20px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    }
+
+    .order-filter-controls label {
+      font-weight: 600;
+      color: #333;
+    }
+
+    .order-filter-controls input[type="date"],
+    .order-filter-controls input[type="text"] {
+      padding: 8px 10px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      flex-grow: 1;
+      /* Cho phép input giãn ra */
+      max-width: 200px;
+      /* Giới hạn độ rộng input */
+    }
+
+    .order-filter-controls button {
+      padding: 8px 15px;
+      white-space: nowrap;
+      /* Ngăn nút bị xuống dòng */
+    }
+
+    /* Lớp table-box để đồng nhất với manage_products.html */
+    .table-box {
+      background: #ffffff;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    }
+
+    /* Đảm bảo bảng trong table-box chiếm hết chiều rộng */
+    .table-box table {
+      width: 100%;
+    }
+  </style>
 </head>
 
 <body>
 
-<aside class="sidebar">
-  <h2><a href="../index.html" class="home-link">🌿 Flora Admin</a></h2>
-  <ul>
-    <li><a href="dashboard.html">Tổng quan</a></li>
-    <li><a href="manage_products.html">Sản phẩm</a></li>
-    <li><a href="manage_users.html">Người dùng</a></li>
-    <li><a href="manage_orders.html" class="active">Đơn hàng</a></li>
-    <li><a href="#" onclick="logout()">Đăng xuất</a></li>
-  </ul>
-</aside>
+  <aside class="sidebar">
+    <h2><a href="../index.html" class="home-link">🌿 Flora Admin</a></h2>
+    <ul>
+      <li><a href="dashboard.html">Tổng quan</a></li>
+      <li><a href="manage_products.html">Sản phẩm</a></li>
+      <li><a href="manage_users.html">Người dùng</a></li>
+      <li><a href="manage_orders.html" class="active">Đơn hàng</a></li>
+      <li><a href="manage_inventory.html">Nhập/Xuất Kho</a></li>
+      <li><a href="#" onclick="logout()">Đăng xuất</a></li>
+    </ul>
+  </aside>
 
-<main class="main">
-  <h1>Quản lý đơn hàng</h1>
+  <main class="main">
+    <h1>Quản lý đơn hàng</h1>
 
-  <div class="revenue-summary">
-    <div class="revenue-card">
-      <div class="icon">💰</div>
-      <div class="info">
-        <h3>Tổng doanh thu</h3>
-        <p id="revenueValue">0đ</p>
-        <span id="orderCount">(0 đơn hàng)</span>
-      </div>
-    </div>
-  </div>
-    
-  <div class="order-filter-controls">
-    <label for="startDate">Từ ngày:</label>
-    <input type="date" id="startDate" name="startDate">
-    
-    <label for="endDate">Đến ngày:</label>
-    <input type="date" id="endDate" name="endDate">
+    <div class="revenue-summary">
+      <div class="revenue-card">
+        <div class="icon">💰</div>
+        <div class="info">
+          <h3>Tổng doanh thu</h3>
+          <p id="revenueValue">0đ</p>
+          <span id="orderCount">(0 đơn hàng)</span>
+        </div>
+      </div>
+    </div>
 
-    <label for="addressSearch">Địa chỉ:</label>
-    <input type="text" id="addressSearch" placeholder="Nhập địa chỉ">
-    
-    <button class="btn-main" onclick="filterOrders()">Lọc Đơn Hàng</button>
-    <button class="btn-secondary" onclick="resetFilter()">Đặt lại</button>
-  </div>
-   <table id="orderTable">
-  <thead>
-   <tr>
-    <th>ID</th>
-    <th>Người đặt</th>
-    <th>Ngày</th>
-    <th>Tổng tiền</th>
-    <th>Trạng thái</th>
-    <th>Hành động</th>
-   </tr>
-  </thead>
-  <tbody></tbody>
- </table>
-</main>
+    <div class="order-filter-controls">
+      <label for="startDate">Từ ngày:</label>
+      <input type="date" id="startDate" name="startDate">
 
-<script src="assets/js/admin.js"></script>
+      <label for="endDate">Đến ngày:</label>
+      <input type="date" id="endDate" name="endDate">
 
-<script>
-Admin.requireAdmin();
+      <label for="addressSearch">Địa chỉ:</label>
+      <input type="text" id="addressSearch" placeholder="Nhập địa chỉ">
 
-// Biến lưu trữ tất cả đơn hàng gốc
-let allOrders = Admin.getOrders();
-// Biến lưu trữ các đơn hàng đang hiển thị (sau khi lọc)
-let displayedOrders = [...allOrders]; 
+      <button class="btn-main" onclick="filterOrders()">Lọc Đơn Hàng</button>
+      <button class="btn-secondary" onclick="resetFilter()">Đặt lại</button>
+    </div>
 
-const tbody = document.querySelector("#orderTable tbody");
+    <div class="table-box">
+      <table id="orderTable">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Người đặt</th>
+            <th>Ngày</th>
+            <th>Tổng tiền</th>
+            <th>Trạng thái</th>
+            <th>Hành động</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+  </main>
 
-/**
- * Hàm chính để hiển thị dữ liệu lên bảng
- * @param {Array} orderList - Danh sách đơn hàng cần hiển thị
- */
-function render(orderList = displayedOrders) {
-  displayedOrders = orderList; // Cập nhật danh sách đang hiển thị
+  <script src="assets/js/admin.js"></script>
 
-  if (!displayedOrders.length) {
-    tbody.innerHTML = '<tr><td colspan="6">Không tìm thấy đơn hàng nào phù hợp.</td></tr>';
-    document.getElementById("revenueValue").textContent = "0đ";
-    document.getElementById("orderCount").textContent = "(0 đơn hàng)";
-    return;
-  }
+  <script>
+    Admin.requireAdmin();
 
-  let totalRevenue = 0;
-  displayedOrders.forEach(o => {
-    // Giả định tính tổng tiền từ items
-    const total = o.items.reduce((s, it) => s + (it.price * it.qty), 0);
-    totalRevenue += total;
-  });
+    // Biến lưu trữ tất cả đơn hàng gốc
+    let allOrders = Admin.getOrders();
+    // Biến lưu trữ các đơn hàng đang hiển thị (sau khi lọc)
+    let displayedOrders = [...allOrders];
 
-  document.getElementById("revenueValue").textContent =
-    totalRevenue.toLocaleString("vi-VN") + "đ";
+    const tbody = document.querySelector("#orderTable tbody");
 
-  document.getElementById("orderCount").textContent =
-    "(" + displayedOrders.length + " đơn hàng)";
+    /**
+     * Hàm chính để hiển thị dữ liệu lên bảng
+     * @param {Array} orderList - Danh sách đơn hàng cần hiển thị
+     */
+    function render(orderList = displayedOrders) {
+      displayedOrders = orderList; // Cập nhật danh sách đang hiển thị
 
-  tbody.innerHTML = displayedOrders.map((o, i) => {
-    const total = o.items.reduce((s, it) => s + (it.price * it.qty), 0);
-    // Index i ở đây là index trong displayedOrders, không phải allOrders.
-    return `
-      <tr>
-        <td>${o.id}</td>
-        <td>${o.name}</td>
-        <td>${o.date}</td>
-        <td>${total.toLocaleString("vi-VN")}đ</td>
-        <td>${o.status}</td>
-        <td>
-          <button class="btn-edit" onclick="viewDetail(${i})">Xem</button>
-          <button class="btn-edit" onclick="changeStatus(${i})">Sửa</button>
-          <button class="btn-del" onclick="deleteOrder(${i})">Xóa</button>
-        </td>
-      </tr>
-    `;
-  }).join("");
-}
+      if (!displayedOrders.length) {
+        tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;">Không tìm thấy đơn hàng nào phù hợp.</td></tr>';
+        document.getElementById("revenueValue").textContent = "0đ";
+        document.getElementById("orderCount").textContent = "(0 đơn hàng)";
+        return;
+      }
 
-/**
- * Hàm lọc đơn hàng theo ngày tháng
- */
-function filterOrders() {
-    const startDateValue = document.getElementById('startDate').value;
-    const endDateValue = document.getElementById('endDate').value;
-    const addressValue = document.getElementById('addressSearch').value.trim().toLowerCase();
-if (!startDateValue && !endDateValue && !addressValue) {
+      let totalRevenue = 0;
+      displayedOrders.forEach(o => {
+        // Giả định tính tổng tiền từ items
+        // Cần đảm bảo order.items có thuộc tính price, nếu không sẽ lấy từ o.total
+        const total = o.total || o.items.reduce((s, it) => s + (it.price * it.qty), 0);
+        totalRevenue += total;
+      });
+
+      document.getElementById("revenueValue").textContent =
+        totalRevenue.toLocaleString("vi-VN") + "đ";
+
+      document.getElementById("orderCount").textContent =
+        "(" + displayedOrders.length + " đơn hàng)";
+
+      tbody.innerHTML = displayedOrders.map((o, i) => {
+        // Sử dụng thuộc tính total nếu có, nếu không thì tính lại
+        const total = o.total || o.items.reduce((s, it) => s + (it.price * it.qty), 0);
+
+        // Giả sử o.name là tên người đặt
+        const orderUser = Admin.getUsers().find(u => u.username === o.username);
+        const customerName = orderUser?.name || o.name || 'Khách vãng lai';
+
+        return `
+            <tr>
+                <td>${o.id}</td>
+                <td>${customerName}</td>
+                <td>${o.date}</td>
+                <td>${total.toLocaleString("vi-VN")}đ</td>
+                <td><span style="padding: 4px 8px; border-radius: 4px; background: #e0f7fa; color: #006064;">${o.status}</span></td>
+                <td>
+                    <button class="btn-edit btn-sm" onclick="viewDetail(${i})">Xem</button>
+                    <button class="btn-edit btn-sm" onclick="changeStatus(${i})">Sửa</button>
+                    <button class="btn-del btn-sm" onclick="deleteOrder(${i})">Xóa</button>
+                </td>
+            </tr>
+        `;
+      }).join("");
+    }
+
+    /**
+     * Hàm lọc đơn hàng theo ngày tháng
+     */
+    function filterOrders() {
+      const startDateValue = document.getElementById('startDate').value;
+      const endDateValue = document.getElementById('endDate').value;
+      const addressValue = document.getElementById('addressSearch').value.trim().toLowerCase();
+
+      if (!startDateValue && !endDateValue && !addressValue) {
         render(allOrders);
         return;
-    }
+      }
 
-    const startDate = startDateValue ? new Date(startDateValue) : null;
-    let endDate = endDateValue ? new Date(endDateValue) : null;
+      const startDate = startDateValue ? new Date(startDateValue) : null;
+      let endDate = endDateValue ? new Date(endDateValue) : null;
 
-    if (endDate) {
+      if (endDate) {
+        // Thiết lập endDate là cuối ngày được chọn để bao gồm cả ngày đó
         endDate.setDate(endDate.getDate() + 1);
         endDate.setMilliseconds(endDate.getMilliseconds() - 1);
-    }
+      }
 
-    const filtered = allOrders.filter(order => {
-        const orderDate = new Date(order.date); 
+      const filtered = allOrders.filter(order => {
+        const orderDate = new Date(order.date);
         let matchesStart = true;
         let matchesEnd = true;
         let matchesAddress = true;
@@ -152,73 +217,96 @@ if (!startDateValue && !endDateValue && !addressValue) {
         if (addressValue) matchesAddress = order.address.toLowerCase().includes(addressValue);
 
         return matchesStart && matchesEnd && matchesAddress;
-    });
+      });
 
-    render(filtered);
-}
+      render(filtered);
+    }
 
-function resetFilter() {
-    document.getElementById('startDate').value = '';
-    document.getElementById('endDate').value = '';
-    document.getElementById('addressSearch').value = '';
+    function resetFilter() {
+      document.getElementById('startDate').value = '';
+      document.getElementById('endDate').value = '';
+      document.getElementById('addressSearch').value = '';
+      render(allOrders);
+    }
+
+    function viewDetail(i) {
+      const o = displayedOrders[i];
+      const orderUser = Admin.getUsers().find(u => u.username === o.username);
+      const customerName = orderUser?.name || 'Khách vãng lai';
+      const customerPhone = orderUser?.phone || 'Chưa cập nhật SĐT';
+
+      const currentProductList = Admin.getProducts();
+      const itemSummary = o.items.map(item => {
+        const productInfo = currentProductList.find(p => Number(p.id) === Number(item.productId));
+        const name = productInfo?.name || `SP ID: ${item.productId}`;
+        const price = (item.price || productInfo?.price || 0).toLocaleString('vi-VN');
+        return `- ${name} (Giá: ${price}đ) x ${item.qty}`;
+      }).join('\n');
+
+      alert(`
+      --- CHI TIẾT ĐƠN HÀNG #${o.id} ---
+
+      Tên khách: ${customerName}
+      SĐT: ${customerPhone}
+      Ngày đặt: ${o.date}
+      Địa chỉ giao: ${o.address}
+      Thanh toán: ${o.payment}
+      Trạng thái: ${o.status}
+      Tổng tiền: ${(o.total || 0).toLocaleString('vi-VN')}₫
+      
+      Sản phẩm:
+      ${itemSummary}
+    `.trim());
+    }
+
+    function changeStatus(i) {
+      const orderToUpdate = allOrders.find(o => o.id === displayedOrders[i].id);
+      if (!orderToUpdate) return;
+
+      const newStatus = prompt("Nhập trạng thái mới:", orderToUpdate.status);
+      if (!newStatus) return;
+
+      orderToUpdate.status = newStatus;
+      Admin.setOrders(allOrders);
+
+      // Cập nhật lại danh sách đang hiển thị
+      displayedOrders = displayedOrders.map(o => o.id === orderToUpdate.id ? orderToUpdate : o);
+      render();
+    }
+
+    function deleteOrder(i) {
+      const orderToDelete = displayedOrders[i];
+      if (!confirm(`Bạn có chắc muốn XÓA đơn hàng #${orderToDelete.id} không?`)) return;
+
+      const originalIndex = allOrders.findIndex(o => o.id === orderToDelete.id);
+      if (originalIndex > -1) {
+        allOrders.splice(originalIndex, 1);
+        Admin.setOrders(allOrders);
+      }
+
+      displayedOrders.splice(i, 1);
+      render();
+    }
+
+    // Khởi tạo các hàm toàn cục
+    window.filterOrders = filterOrders;
+    window.resetFilter = resetFilter;
+    window.viewDetail = viewDetail;
+    window.changeStatus = changeStatus;
+    window.deleteOrder = deleteOrder;
+
+    // Hàm được gọi khi tải trang lần đầu
     render(allOrders);
-}
-
-function viewDetail(i) {
-  // Lấy đơn hàng từ danh sách đang hiển thị
-  const o = displayedOrders[i]; 
-  alert(`Đơn #${o.id}
-Khách: ${o.name}
-Ngày: ${o.date}
-Địa chỉ: ${o.address}
-Thanh toán: ${o.payment}
-Trạng thái: ${o.status}`);
-}
-
-function changeStatus(i) {
-  // Tìm đơn hàng gốc trong allOrders bằng ID (vì index i thay đổi khi lọc)
-  const orderToUpdate = allOrders.find(o => o.id === displayedOrders[i].id);
-  if (!orderToUpdate) return;
-  
-  const newStatus = prompt("Nhập trạng thái mới:", orderToUpdate.status);
-  if (!newStatus) return;
-  
-  orderToUpdate.status = newStatus;
-  Admin.setOrders(allOrders); // Lưu lại toàn bộ danh sách đã chỉnh sửa
-  
-  // Cập nhật lại danh sách đang hiển thị (để duy trì kết quả lọc nếu có)
-  displayedOrders = displayedOrders.map(o => o.id === orderToUpdate.id ? orderToUpdate : o);
-  render();
-}
-
-function deleteOrder(i) {
-  // Tìm đơn hàng gốc trong allOrders bằng ID
-  const orderToDelete = displayedOrders[i];
-  if (!confirm(`Bạn có chắc muốn XÓA đơn hàng #${orderToDelete.id} không?`)) return;
-
-  // Xóa khỏi danh sách gốc (allOrders)
-  const originalIndex = allOrders.findIndex(o => o.id === orderToDelete.id);
-  if (originalIndex > -1) {
-    allOrders.splice(originalIndex, 1);
-    Admin.setOrders(allOrders); // Lưu lại danh sách gốc mới
-  }
-  
-  // Xóa khỏi danh sách đang hiển thị (displayedOrders)
-  displayedOrders.splice(i, 1);
-  render();
-}
-
-// Hàm được gọi khi tải trang lần đầu
-render(allOrders);
-</script>
+  </script>
 
 
-<script>
-function logout() {
-  localStorage.removeItem("isAdmin");
-  location.href = "admin_login.html";
-}
-</script>
+  <script>
+    function logout() {
+      localStorage.removeItem("isAdmin");
+      location.href = "admin_login.html";
+    }
+  </script>
 
 </body>
+
 </html>
