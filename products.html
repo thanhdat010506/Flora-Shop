@@ -8,10 +8,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <script defer src="js/products.js"></script>
     <style>
-     /* ======================= */
-/*  🌿 FLORA SHOP PRODUCT  */
-/* ======================= */
-
+      
 body {
   background: #fdfbf6;
   font-family: 'Quicksand', sans-serif;
@@ -219,20 +216,105 @@ body {
         });
 
         // 🌸 Dữ liệu sản phẩm mẫu (ảnh JPG)
-        const defaultProducts = [
-          {id:1,name:'Hoa hồng',category:'Hoa',price:120000,desc:'Hoa hồng đẹp', img:'assets/img/id1.jpg'},
-          {id:2,name:'Hoa hướng dương',category:'Hoa',price:90000,desc:'Rạng rỡ tỏa nắng', img:'assets/img/id2.jpg'},
-          {id:3,name:'Cây phát tài',category:'Cây cảnh',price:250000,desc:'Mang lại may mắn', img:'assets/img/id3.jpg'},
-          {id:4,name:'Hoa tulip',category:'Hoa',price:150000,desc:'Thanh lịch và tinh tế', img:'assets/img/id4.jpg'},
-          {id:5,name:'Hoa lan',category:'Hoa',price:200000,desc:'Biểu tượng sang trọng', img:'assets/img/id5.jpg'},
-          {id:6,name:'Hoa cúc',category:'Hoa',price:80000,desc:'Đơn giản mà đáng yêu', img:'assets/img/id6.jpg'},
-          {id:7,name:'Cây bonsai',category:'Cây cảnh',price:350000,desc:'Nghệ thuật thu nhỏ thiên nhiên', img:'assets/img/id7.jpg'},
-          {id:8,name:'Cây sen đá',category:'Cây cảnh',price:100000,desc:'Dễ chăm, bền bỉ', img:'assets/img/id8.jpg'},
-          {id:9,name:'Hoa mẫu đơn',category:'Hoa',price:180000,desc:'Sang trọng và quý phái', img:'assets/img/id9.jpg'},
-          {id:10,name:'Cây may mắn',category:'Cây cảnh',price:220000,desc:'Mang lại tài lộc', img:'assets/img/id10.jpg'},
-          {id:11,name:'Hoa ly',category:'Hoa',price:190000,desc:'Tinh khiết và thanh cao', img:'assets/img/id11.jpg'},
-          {id:12,name:'Hoa cẩm tú cầu',category:'Hoa',price:210000,desc:'Ngọt ngào và nhẹ nhàng', img:'assets/img/id12.jpg'}
-        ];
+const defaultProducts = [
+  {
+    id: 1,
+    name: 'Hoa hồng đỏ',
+    category: 'Hoa',
+    price: 120000,
+    desc: 'Bó hoa hồng đỏ tươi, cánh dày và lâu tàn, phù hợp tặng sinh nhật, kỷ niệm và các dịp đặc biệt. Hoa được tuyển chọn kỹ, cắm bó đơn giản nhưng sang trọng.',
+    img: 'assets/img/id1.jpg'
+  },
+  {
+    id: 2,
+    name: 'Hoa hướng dương',
+    category: 'Hoa',
+    price: 90000,
+    desc: 'Hoa hướng dương rực rỡ, tượng trưng cho niềm tin và sự lạc quan. Thích hợp trang trí phòng khách, quán cà phê hoặc làm quà động viên bạn bè, người thân.',
+    img: 'assets/img/id2.jpg'
+  },
+  {
+    id: 3,
+    name: 'Cây phát tài',
+    category: 'Cây cảnh',
+    price: 250000,
+    desc: 'Cây phát tài xanh tốt, dễ chăm sóc, thường được đặt ở phòng khách hoặc bàn làm việc với ý nghĩa thu hút tài lộc và mang lại may mắn cho gia chủ.',
+    img: 'assets/img/id3.jpg'
+  },
+  {
+    id: 4,
+    name: 'Hoa tulip',
+    category: 'Hoa',
+    price: 150000,
+    desc: 'Hoa tulip thanh lịch với gam màu nhẹ nhàng, mang phong cách châu Âu hiện đại. Phù hợp làm quà tặng sang trọng hoặc trang trí bàn tiệc, sự kiện nhỏ.',
+    img: 'assets/img/id4.jpg'
+  },
+  {
+    id: 5,
+    name: 'Hoa lan',
+    category: 'Hoa',
+    price: 200000,
+    desc: 'Chậu hoa lan quý phái, bông to và nở bền. Rất được ưa chuộng trong các dịp khai trương, tân gia, chúc mừng đối tác hoặc trang trí không gian sang trọng.',
+    img: 'assets/img/id5.jpg'
+  },
+  {
+    id: 6,
+    name: 'Hoa cúc',
+    category: 'Hoa',
+    price: 80000,
+    desc: 'Hoa cúc tươi tắn với màu sắc dịu nhẹ, thích hợp cắm bình trang trí bàn ăn, góc học tập hoặc không gian làm việc. Dễ phối với nhiều loại hoa khác.',
+    img: 'assets/img/id6.jpg'
+  },
+  {
+    id: 7,
+    name: 'Cây bonsai',
+    category: 'Cây cảnh',
+    price: 350000,
+    desc: 'Cây bonsai dáng đẹp, được tỉa tỉ mỉ, mang phong cách nghệ thuật. Giúp không gian sống và làm việc trở nên tinh tế, thư giãn hơn.',
+    img: 'assets/img/id7.jpg'
+  },
+  {
+    id: 8,
+    name: 'Cây sen đá',
+    category: 'Cây cảnh',
+    price: 100000,
+    desc: 'Cây sen đá nhỏ gọn, chịu hạn tốt, rất dễ chăm sóc. Phù hợp đặt trên bàn làm việc, kệ sách hoặc góc cửa sổ, thích hợp cho người bận rộn.',
+    img: 'assets/img/id8.jpg'
+  },
+  {
+    id: 9,
+    name: 'Hoa mẫu đơn',
+    category: 'Hoa',
+    price: 180000,
+    desc: 'Hoa mẫu đơn sang trọng, tượng trưng cho sự vương giả và thịnh vượng. Thường được dùng trong các bó hoa cao cấp, trang trí sảnh hoặc phòng khách.',
+    img: 'assets/img/id9.jpg'
+  },
+  {
+    id: 10,
+    name: 'Cây may mắn',
+    category: 'Cây cảnh',
+    price: 220000,
+    desc: 'Chậu cây may mắn xanh mướt, dễ sống và ít sâu bệnh. Thích hợp đặt trên bàn làm việc, quầy lễ tân với mong muốn thu hút tài lộc và năng lượng tích cực.',
+    img: 'assets/img/id10.jpg'
+  },
+  {
+    id: 11,
+    name: 'Hoa ly',
+    category: 'Hoa',
+    price: 190000,
+    desc: 'Hoa ly thơm ngát, cánh to và sắc nét, mang vẻ đẹp tinh khiết và thanh cao. Thường được dùng để cắm bình lớn trang trí phòng khách hoặc sảnh lễ tân.',
+    img: 'assets/img/id11.jpg'
+  },
+  {
+    id: 12,
+    name: 'Hoa cẩm tú cầu',
+    category: 'Hoa',
+    price: 210000,
+    desc: 'Hoa cẩm tú cầu với nhiều bông nhỏ tạo thành chùm lớn, màu sắc dịu ngọt. Phù hợp trang trí ban công, sân vườn nhỏ hoặc làm quà tặng nhẹ nhàng, tinh tế.',
+    img: 'assets/img/id12.jpg'
+  }
+];
+
 
         if(!localStorage.getItem('products')) 
           localStorage.setItem('products', JSON.stringify(defaultProducts));
