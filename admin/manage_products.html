@@ -1,81 +1,320 @@
 <!DOCTYPE html>
 <html lang="vi">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Flora Admin - Sản phẩm</title>
 
-<link rel="stylesheet" href="assets/css/admin.css">
-<script defer src="assets/js/admin.js"></script>
-</head>
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flora Admin - Quản lý Sản phẩm</title>
+    <link rel="stylesheet" href="assets/css/admin.css">
+    <script defer src="assets/js/admin.js"></script>
 
-<body>
+  </head>
 
-<aside class="sidebar">
-  <h2><a href="../index.html" class="home-link">🌿 Flora Admin</a></h2>
+  <body>
+    <aside class="sidebar">
+      <h2><a href="../index.html" class="home-link">🌿Flora Admin</a></h2>
+      <ul>
+        <li><a href="dashboard.html">Tổng quan</a></li>
+        <li><a href="manage_products.html" class="active">Sản phẩm</a></li>
+        <li><a href="manage_users.html">Người dùng</a></li>
+        <li><a href="manage_orders.html">Đơn hàng</a></li>
+        <li><a href="manage_inventory.html">Nhập/Xuất Kho</a></li>
+        <li><a href="#" onclick="logout()">Đăng xuất</a></li>
+      </ul>
+    </aside>
 
-  <ul>
-    <li><a href="dashboard.html">Tổng quan</a></li>
-    <li><a href="manage_products.html" class="active">Sản phẩm</a></li>
-    <li><a href="manage_users.html">Người dùng</a></li>
-    <li><a href="manage_orders.html">Đơn hàng</a></li>
-    <li><a href="#" onclick="logout()">Đăng xuất</a></li>
-  </ul>
-</aside>
+    <main class="main">
+      <h1>Quản lý sản phẩm</h1>
+      <button id="addProductBtn" class="btn-add">+ Thêm sản phẩm</button>
 
-<main class="main">
-  <h1>Quản lý sản phẩm</h1>
+      <div class="table-box">
+        <table id="plist">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Ảnh</th>
+              <th>Tên sản phẩm</th>
+              <th>Giá (₫)</th>
+              <th>Tồn kho</th>
+              <th>Mô tả</th>
+              <th style="width:130px;">Hành động</th>
+            </tr>
+          </thead>
+          <tbody>
+          </tbody>
+        </table>
+      </div>
+    </main>
 
-  <button class="btn-add" id="addProductBtn">+ Thêm sản phẩm</button>
+    <div id="productModal" class="modal">
+      <div class="modal-content">
+        <span class="close" id="closeProductModal">&times;</span>
+        <h2 id="modalTitle">Thêm sản phẩm mới</h2>
 
-  <div class="table-box">
-    <table id="plist">
-      <thead>
-        <tr>
-          <th>Tên</th>
-          <th>Giá</th>
-          <th>Ảnh</th>
-          <th>Mô tả</th>
-          <th style="width:130px;">Hành động</th>
-        </tr>
-      </thead>
-      <tbody></tbody>
-    </table>
-  </div>
-</main>
+        <input type="hidden" id="productId">
 
-<div id="productModal" class="modal">
-  <div class="modal-content">
-    <h2 id="modalTitle">Thêm sản phẩm</h2>
+        <div class="form-group">
+          <label>Tên sản phẩm:</label>
+          <input type="text" id="pname" placeholder="Ví dụ: Hoa hồng đỏ Đà Lạt">
+        </div>
 
-    <label>Tên sản phẩm</label>
-    <input type="text" id="pname">
+        <div class="form-group">
+          <label>Giá (VNĐ):</label>
+          <input type="number" id="pprice" min="0" placeholder="120000">
+          <small style="display: block; margin-top: 5px;">Giá không bao gồm
+            thuế</small>
+        </div>
 
-    <label>Giá</label>
-    <input type="number" id="pprice">
+        <div class="form-group">
+          <label>Ảnh (URL hoặc đường dẫn):</label>
+          <input type="text" id="pimage" placeholder="assets/img/hoa-hong.jpg">
+        </div>
 
-    <label>Link ảnh</label>
-    <input type="text" id="pimage">
+        <div class="form-group">
+          <label>Mô tả:</label>
+          <textarea id="pdesc" rows="4"
+            placeholder="Mô tả chi tiết sản phẩm..."></textarea>
+        </div>
 
-    <label>Hoặc upload ảnh</label>
-    <input type="file" id="pimageFile" accept="image/*">
-
-    <label>Mô tả</label>
-    <textarea id="pdesc" rows="3"></textarea>
-
-    <div class="modal-actions">
-      <button id="saveProductBtn" class="btn-primary">Lưu</button>
-      <button id="cancelProductBtn" class="btn-cancel">Hủy</button>
+        <div class="modal-actions">
+          <button id="saveProductBtn" class="btn-primary">Lưu</button>
+          <button id="cancelProductBtn" class="btn-cancel">Hủy</button>
+        </div>
+      </div>
     </div>
-  </div>
-</div>
 
-<script>
-function logout() {
-  localStorage.removeItem("isAdmin");
-  location.href = "admin_login.html";
+    <script>
+// Biến toàn cục
+let products = [];
+let editingProductId = null;
+let modal = null;
+
+// ===================================
+// 0. Hàm Mock dữ liệu Phiếu Nhập Kho ban đầu
+// ===================================
+// Sử dụng hàm này để mock dữ liệu nhập kho nếu không có Admin.getStockHistory()
+function getInitialInventory() {
+    return [
+        { productId: 11, quantity: 15, note: "Tồn kho ban đầu" },
+        { productId: 10, quantity: 90, note: "Tồn kho ban đầu" },
+        { productId: 9, quantity: 25, note: "Tồn kho ban đầu" },
+        { productId: 8, quantity: 60, note: "Tồn kho ban đầu" },
+        { productId: 7, quantity: 40, note: "Tồn kho ban đầu" },
+        { productId: 6, quantity: 120, note: "Tồn kho ban đầu" },
+        { productId: 5, quantity: 30, note: "Tồn kho ban đầu" },
+        { productId: 4, quantity: 75, note: "Tồn kho ban đầu" },
+        { productId: 3, quantity: 50, note: "Tồn kho ban đầu" },
+        { productId: 2, quantity: 80, note: "Tồn kho ban đầu" },
+        { productId: 1, quantity: 100, note: "Tồn kho ban đầu" },
+    ];
 }
-</script>
 
-</body>
+// ===================================
+// 0.1 Đồng bộ hóa Tồn kho từ Phiếu Nhập
+// ===================================
+function syncInitialStock() {
+    let currentProducts = Admin.getProducts();
+    const initialInventory = getInitialInventory(); 
+
+    const stockMap = new Map();
+    initialInventory.forEach(item => {
+        stockMap.set(item.productId, parseInt(item.quantity) || 0);
+    });
+
+    let changesMade = false;
+
+    const updatedProducts = currentProducts.map(p => {
+        const initialStock = stockMap.get(p.id);
+
+        if (initialStock !== undefined && (p.qty === undefined)) {
+            p.qty = initialStock; 
+            changesMade = true;
+        } else if (p.qty === undefined) {
+            p.qty = 0; 
+            changesMade = true;
+        }
+        
+        if (p.stock !== undefined) {
+            delete p.stock;
+            changesMade = true;
+        }
+
+        return p;
+    });
+
+    if (changesMade) {
+        Admin.setProducts(updatedProducts);
+        console.log("Đã đồng bộ hóa tồn kho ban đầu thành công.");
+    }
+}
+
+
+// ===================================
+// 1. Render bảng sản phẩm
+// ===================================
+function renderProducts() {
+    products = Admin.getProducts(); 
+    const tbody = document.querySelector('#plist tbody');
+    if (!tbody) return;
+
+    tbody.innerHTML = '';
+
+    products.forEach(p => {
+        const currentStock = p.qty ?? 0;
+
+        const row = `
+          <tr>
+            <td>${p.id}</td>
+            <td><img src="../${p.image || 'assets/img/no-image.jpg'}" alt="${p.name}" class="product-img"></td>
+            <td><strong>${p.name}</strong></td>
+            <td>${Number(p.price).toLocaleString('vi-VN')}</td>
+            <td>${currentStock.toLocaleString('vi-VN')}</td>
+            <td>${p.description?.substring(0, 60) || ''}${p.description?.length > 60 ? '...' : ''}</td>
+            <td>
+              <button class="btn-edit" onclick="editProduct(${p.id})">Sửa</button>
+              <button class="btn-delete" onclick="deleteProduct(${p.id})">Xóa</button>
+            </td>
+          </tr>`;
+        tbody.innerHTML += row;
+    });
+}
+
+// ===================================
+// 2. Mở / Đóng Modal (Giữ nguyên)
+// ===================================
+function openProductModal(product = null) {
+    if (!modal) return;
+
+    document.getElementById('modalTitle').textContent = product ? 'Chỉnh sửa sản phẩm' : 'Thêm sản phẩm mới';
+    editingProductId = product ? product.id : null;
+
+    document.getElementById('productId').value = product ? product.id : '';
+    document.getElementById('pname').value = product ? product.name : '';
+    document.getElementById('pprice').value = product ? product.price : '';
+    document.getElementById('pimage').value = product ? product.image : '';
+    document.getElementById('pdesc').value = product ? (product.description || '') : '';
+
+    modal.style.display = 'flex'; 
+}
+
+function closeProductModal() {
+    if (!modal) return;
+    modal.style.display = 'none';
+    editingProductId = null;
+}
+
+// ===================================
+// 3. Lưu sản phẩm (Thêm hoặc Sửa)
+// ===================================
+function saveProductHandler() {
+    const name = document.getElementById('pname').value.trim();
+    const price = document.getElementById('pprice').value.trim();
+    const image = document.getElementById('pimage').value.trim();
+    const description = document.getElementById('pdesc').value.trim();
+
+    // Validation
+    if (!name || !price || Number(price) <= 0) {
+        alert('Vui lòng nhập đầy đủ Tên sản phẩm và Giá hợp lệ!');
+        return;
+    }
+
+    let product;
+
+    if (editingProductId) {
+        // Cập nhật sản phẩm cũ
+        product = products.find(p => p.id === editingProductId);
+        if (product) {
+            product.name = name;
+            product.price = price;
+            product.image = image;
+            product.description = description;
+            alert(`Cập nhật sản phẩm #${product.id} thành công!`);
+        }
+    } else {
+        // Thêm mới
+        const maxId = products.reduce((max, p) => Math.max(max, p.id), 0);
+        const newId = maxId + 1;
+
+        product = {
+            id: newId,
+            name,
+            price,
+            image: image || 'assets/img/no-image.jpg',
+            qty: 0, 
+            description
+        };
+        products.push(product);
+        alert(`Thêm sản phẩm mới #${newId} thành công!`);
+    }
+
+    Admin.setProducts(products);
+    closeProductModal();
+    renderProducts();
+}
+
+// ===================================
+// 4. Sửa / Xóa sản phẩm (Giữ nguyên)
+// ===================================
+window.editProduct = (id) => {
+    const product = products.find(p => p.id === id);
+    if (product) openProductModal(product);
+};
+
+window.deleteProduct = (id) => {
+    const product = products.find(p => p.id === id);
+    if (!product) return;
+
+    // Kiểm tra xem sản phẩm có đang nằm trong đơn hàng nào không
+    const orders = Admin.getOrders();
+    const usedInOrder = orders.some(order =>
+        order.items.some(item => item.productId === id)
+    );
+
+    if (usedInOrder) {
+        alert(`Không thể xóa sản phẩm "${product.name}" vì đã có trong đơn hàng!`);
+        return;
+    }
+
+    if (confirm(`Bạn có chắc chắn muốn xóa sản phẩm "${product.name}" (ID: ${id})?`)) {
+        products = products.filter(p => p.id !== id);
+        Admin.setProducts(products);
+        renderProducts();
+        alert('Đã xóa sản phẩm thành công.');
+    }
+};
+
+// ===================================
+// 5. Khởi tạo khi DOM sẵn sàng
+// ===================================
+document.addEventListener('DOMContentLoaded', () => {
+    Admin.requireAdmin(); 
+
+    modal = document.getElementById('productModal');
+    
+    // Đồng bộ tồn kho
+    syncInitialStock(); 
+
+    products = Admin.getProducts();
+
+    renderProducts();
+
+    // Sự kiện nút Thêm sản phẩm
+    document.getElementById('addProductBtn').addEventListener('click', () => openProductModal());
+
+    // Nút Lưu
+    document.getElementById('saveProductBtn').addEventListener('click', saveProductHandler);
+
+    // Nút Hủy & Đóng modal
+    document.getElementById('cancelProductBtn').addEventListener('click', closeProductModal);
+    document.getElementById('closeProductModal').addEventListener('click', closeProductModal);
+
+    // Click ngoài modal để đóng
+    window.addEventListener('click', (e) => {
+        if (e.target === modal) closeProductModal();
+    });
+});
+  </script>
+
+  </body>
+
 </html>
