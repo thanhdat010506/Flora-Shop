@@ -141,4 +141,33 @@
     <p>© 2025 Flora Shop. Mọi quyền được bảo lưu.</p>
   </footer>
 </body>
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const userIcon = document.querySelector('.fa-user');
+
+  // Lấy thông tin người dùng đang đăng nhập
+  const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+
+  // XÓA phần tên user nếu có
+  const usernameLabel = document.querySelector('.username-label');
+  if (usernameLabel) {
+    usernameLabel.remove();
+  }
+
+  if (currentUser) {
+    // Nếu là admin -> chuyển đến admin dashboard
+    if (currentUser.role === 'admin') {
+      userIcon.setAttribute('href', 'admin/dashboard.html');
+    } else {
+      // Nếu là user thường -> chuyển đến account.html
+      userIcon.setAttribute('href', 'account.html');
+    }
+    userIcon.setAttribute('title', `Xin chào, ${currentUser.fullName || currentUser.username}`);
+  } else {
+    // Nếu chưa đăng nhập -> chuyển đến login.html
+    userIcon.setAttribute('href', 'login.html');
+    userIcon.setAttribute('title', 'Đăng nhập');
+  }
+});
+</script>
 </html>

@@ -80,29 +80,32 @@ document.addEventListener('DOMContentLoaded', ()=>{
     }
   }
 
-  function addToCart(id){
-    const user = JSON.parse(localStorage.getItem('currentUser') || 'null');
-    if (!user) {
-      alert("Vui lòng đăng nhập để mua hàng!");
-      location.href = "login.html";
-      return;
-    }
-
-    const products = JSON.parse(localStorage.getItem('products') || '[]');
-    const prod = products.find(p => p.id === id);
-    if (!prod) {
-      alert("Sản phẩm không hợp lệ hoặc dữ liệu bị lỗi!");
-      return;
-    }
-
-    let cart = JSON.parse(localStorage.getItem('cart') || '[]');
-    const ex = cart.find(i => i.id === id);
-    if (ex) ex.qty++;
-    else cart.push({ ...prod, qty: 1 });
-
-    localStorage.setItem('cart', JSON.stringify(cart));
-    alert(`Đã thêm "${prod.name}" vào giỏ hàng!`);
+function addToCart(id){
+  const user = JSON.parse(localStorage.getItem('currentUser') || 'null');
+  if (!user) {
+    alert("Vui lòng đăng nhập để mua hàng!");
+    location.href = "login.html";
+    return;
   }
+
+  const products = JSON.parse(localStorage.getItem('products') || '[]');
+  const prod = products.find(p => p.id === id);
+  if (!prod) {
+    alert("Sản phẩm không hợp lệ hoặc dữ liệu bị lỗi!");
+    return;
+  }
+
+  // SỬA: dùng cart theo username như các file khác
+  const key = `cart_${user.username}`;
+  let cart = JSON.parse(localStorage.getItem(key) || '[]');
+  const ex = cart.find(i => i.id === id);
+  
+  if (ex) ex.qty++;
+  else cart.push({ ...prod, qty: 1 });
+
+  localStorage.setItem(key, JSON.stringify(cart));
+  alert(`Đã thêm "${prod.name}" vào giỏ hàng!`);
+}
 
   function filterProducts(){
     let filtered = JSON.parse(localStorage.getItem('products')||'[]');

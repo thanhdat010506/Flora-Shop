@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="vi">
 <head>
@@ -26,7 +25,28 @@
   <form id="checkoutForm">
     <input id="c_name" placeholder="Họ tên" required />
     <input id="c_phone" placeholder="Số điện thoại" />
-    <input id="c_address" placeholder="Địa chỉ giao hàng" required />
+    
+    <div class="address-selection">
+      <label>Chọn địa chỉ giao hàng:</label>
+      <div class="address-options">
+        <input type="radio" id="savedAddress" name="addressOption" value="saved" checked>
+        <label for="savedAddress">Sử dụng địa chỉ đã lưu</label>
+        
+        <input type="radio" id="newAddress" name="addressOption" value="new">
+        <label for="newAddress">Địa chỉ mới</label>
+      </div>
+      
+      <div id="savedAddressContainer">
+        <select id="savedAddressSelect">
+          <option value="">Chọn địa chỉ</option>
+        </select>
+      </div>
+      
+      <div id="newAddressContainer" style="display:none;">
+        <input type="text" id="c_address" placeholder="Nhập địa chỉ mới" />
+      </div>
+    </div>
+    
     <select id="c_payment">
       <option>Tiền mặt</option>
       <option>Chuyển khoản</option>

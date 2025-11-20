@@ -63,6 +63,7 @@ if (loginForm) {
   });
 }
 
+/* ---------- Đăng ký ---------- */
 const regForm = document.getElementById("regForm");
 if (regForm) {
   regForm.addEventListener("submit", (e) => {
@@ -92,6 +93,13 @@ if (regForm) {
     const usernameRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]+$/;
     if (!usernameRegex.test(username)) {
       alert("Tên đăng nhập phải có cả chữ và số, và không chứa ký tự đặc biệt!");
+      return;
+    }
+
+    // ⚠️ Địa chỉ: phải chứa cả số và chữ (số nhà + tên đường)
+    const addressRegex = /^(?=.*\d)(?=.*[A-Za-zÀ-ỹ])[\dA-Za-zÀ-ỹ\s,.-]+$/;
+    if (!addressRegex.test(address)) {
+      alert("Địa chỉ phải chứa số nhà và tên đường/phường!");
       return;
     }
 
@@ -127,7 +135,6 @@ if (regForm) {
   });
 }
 
-
 /* ---------- Đăng xuất ---------- */
 function logout() {
   localStorage.removeItem("currentUser");
@@ -135,4 +142,3 @@ function logout() {
   location.href = "../login.html";
 }
 window.logout = logout;
-

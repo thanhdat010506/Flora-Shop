@@ -334,4 +334,22 @@ body {
     </script>
 
   </body>
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const userIcon = document.querySelector('.fa-user');
+  const currentUser = JSON.parse(localStorage.getItem('currentUser') || 'null');
+  
+  if (currentUser) {
+    if (currentUser.role === 'admin') {
+      userIcon.setAttribute('href', 'admin/dashboard.html');
+    } else {
+      userIcon.setAttribute('href', 'account.html');
+    }
+    userIcon.setAttribute('title', `Xin chào, ${currentUser.fullName || currentUser.username}`);
+  } else {
+    userIcon.setAttribute('href', 'login.html');
+    userIcon.setAttribute('title', 'Đăng nhập');
+  }
+});
+</script>
 </html>
