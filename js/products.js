@@ -55,23 +55,19 @@ document.addEventListener('DOMContentLoaded', ()=>{
       </div>
     `).join('');
 
-    // 🔹 nút Thêm vào giỏ: chỉ thêm, không mở chi tiết
     document.querySelectorAll('.add-btn').forEach(b=>{
       b.addEventListener('click', (e)=> {
-        e.stopPropagation(); // tránh trigger viewProductDetail
+        e.stopPropagation(); 
         const id = Number(b.dataset.id);
         const card = b.closest('.product-card');
         const qtyInput = card ? card.querySelector('.qty-input') : null;
         const qty = qtyInput && Number(qtyInput.value) > 0 ? Number(qtyInput.value) : 1;
 
         addToCart(id, qty);
-
-        // (tuỳ chọn) reset về 1 sau khi thêm
         if (qtyInput) qtyInput.value = 1;
       });
     });
 
-    // 🔹 chặn click/focus trong ô số lượng làm bật viewProductDetail
     document.querySelectorAll('.qty-input').forEach(input => {
       ['click', 'focus', 'input', 'change'].forEach(evt => {
         input.addEventListener(evt, e => {
@@ -102,7 +98,6 @@ document.addEventListener('DOMContentLoaded', ()=>{
     }
   }
 
-  // 🔹 thêm tham số quantity, mặc định = 1
   function addToCart(id, quantity = 1){
     const user = JSON.parse(localStorage.getItem('currentUser') || 'null');
     if (!user) {
@@ -151,11 +146,9 @@ document.addEventListener('DOMContentLoaded', ()=>{
 
   if(filterBtn) filterBtn.addEventListener('click', filterProducts);
 
-  // hiển thị lần đầu
   display(filteredProducts);
 });
 
-// giữ nguyên hàm này
 function viewProductDetail(productId) {
   window.location.href = `detail.html?id=${productId}`;
 }
