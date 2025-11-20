@@ -47,14 +47,28 @@
       </div>
     </div>
     
-    <select id="c_payment">
-      <option>Tiền mặt</option>
-      <option>Chuyển khoản</option>
-    </select>
-    <button class="btn" type="submit">Xác nhận thanh toán</button>
-  </form>
+     <label for="c_payment"><strong>Phương thức thanh toán</strong></label>
+      <select id="c_payment" required>
+        <option value="cash">Tiền mặt</option>
+        <option value="transfer">Chuyển khoản</option>
+        <option value="visa">Thẻ Visa / Mastercard</option>
+      </select>
+      <div id="cardInfo" style="display:none; margin-top:15px; border:1px solid #ccc; padding:15px; border-radius:8px;">
+
+        <h3>Thông tin thẻ</h3>
+
+        <input id="card_number" placeholder="Số thẻ (16 số)" maxlength="16" />
+        <input id="card_holder" placeholder="Tên chủ thẻ (IN HOA)" />
+        <input id="card_expiry" placeholder="MM/YY" maxlength="5" />
+        <input id="card_cvv" placeholder="CVV (3 số)" maxlength="3" />
+
+      </div>
+
+      <button class="btn" type="submit" style="margin-top:20px;">Xác nhận thanh toán</button>
+    </form>
 </main>
 
 <footer class="footer"><p>© 2025 Flora Shop</p></footer>
 </body>
+
 </html>
